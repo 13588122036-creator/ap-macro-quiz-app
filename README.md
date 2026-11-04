@@ -1,2 +1,9 @@
-# ap-macro-quiz-app
-AP Macroeconomics quiz app (2019/2023 real exam questions with answers and explanations)
+# AP Macro 真题刷题
+
+基于 2019 / 2023 年 AP Macroeconomics 官方真题的刷题网页应用（单文件 HTML）。
+
+- 60 道选择题（含官方答案与中文解析），按 AP 宏观六单元分类
+- 6 道 FRQ（2023 x3、2019 x3），附评分要点
+- 功能：随机刷题 / 按单元刷题 / 错题本 / 统计 / 跨设备进度导出导入
+
+打开方式：访问 GitHub Pages 链接，或下载 index.html 在浏览器中打开。
