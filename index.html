@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AP Macro 真题刷题</title>
+<title>AP Macro Drill</title>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap">
 <style>
-:root{--bg:#F6F4EF;--card:#FFFFFF;--ink:#24344C;--ink2:#5A6478;--line:#E6E2D8;--ok:#2E7D6E;--bad:#B4554F;--accent:#C48A3D;--u1:#9BBBF4;--u2:#A2DDAA;--u3:#E1B98F;--u4:#C9A7E8;--u5:#94D4D0;--u6:#F4B393}
+:root{
+  --bg:#F6F4EF; --card:#FFFFFF; --ink:#24344C; --ink2:#5A6478; --line:#E6E2D8;
+  --ok:#2E7D6E; --bad:#B4554F; --accent:#C48A3D;
+  --u1:#9BBBF4; --u2:#A2DDAA; --u3:#E1B98F; --u4:#C9A7E8; --u5:#94D4D0; --u6:#F4B393;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.65;min-height:100vh}
@@ -60,8 +64,10 @@ a{color:inherit;text-decoration:none}
 .explain .res{font-size:14.5px;font-weight:700;margin-bottom:8px}
 .explain .res.ok{color:var(--ok)}
 .explain .res.bad{color:var(--bad)}
-.explain .exp{font-size:14px;color:var(--ink);line-height:1.7}
+.explain .exp{font-size:14px;color:var(--ink);line-height:1.7;margin-top:6px}
 .explain .exp b{color:var(--accent)}
+.explain .ref{font-size:13px;color:var(--ink2);line-height:1.7;margin-top:8px;padding:10px 12px;background:#F8F6F1;border:1px solid var(--line);border-radius:10px}
+.explain .ref b{color:var(--accent)}
 .quiz-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .btn{border-radius:10px;padding:11px 18px;font-size:14px;font-weight:600}
 .btn.dark{background:var(--ink);color:#fff}
@@ -75,6 +81,9 @@ a{color:inherit;text-decoration:none}
 .frq{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
 .frq h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .frq .q{font-size:14px;line-height:1.8;white-space:pre-wrap;color:var(--ink)}
+.frq textarea{width:100%;min-height:110px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:13.5px;font-family:inherit;resize:vertical;background:#FBF9F5;color:var(--ink);box-sizing:border-box;margin-top:10px;line-height:1.7}
+.frq textarea:focus{outline:none;border-color:var(--ink)}
+.frq .save-hint{font-size:12px;color:var(--ok);margin-top:6px;display:none}
 .frq details{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
 .frq summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink2)}
 .frq summary:hover{color:var(--ink)}
@@ -91,107 +100,211 @@ a{color:inherit;text-decoration:none}
 .modal-bg.show{display:flex}
 .modal{background:#fff;border-radius:14px;max-width:540px;width:100%;padding:18px;border:1px solid var(--line)}
 .modal h3{font-size:15px;margin-bottom:10px}
-.modal textarea{width:100%;height:120px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:12px;font-family:Consolas,monospace;resize:vertical;background:#F9F8F5;color:var(--ink);box-sizing:border-box}
+.modal textarea{width:100%;height:140px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:12px;font-family:Consolas,monospace;resize:vertical;background:#F9F8F5;color:var(--ink);box-sizing:border-box}
 .modal-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-@media (max-width:520px){.q-text{font-size:15.5px}.opt{font-size:13.5px}.brand{font-size:18px}.nav a{padding:7px 11px;font-size:13px}}
+@media (max-width:520px){
+  .q-text{font-size:15.5px}
+  .opt{font-size:13.5px}
+  .brand{font-size:18px}
+  .nav a{padding:7px 11px;font-size:13px}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="top">
-<div class="brand">AP Macro 真题刷题<small>2019 / 2023 真题 + FRQ</small></div>
-<div class="nav"><a href="#home" data-route>首页</a><a href="#quiz" data-route>刷题</a><a href="#mistakes" data-route>错题本</a><a href="#frq" data-route>FRQ</a><a href="#stats" data-route>统计</a></div>
+  <div class="top">
+    <div class="brand">AP Macro Drill<small>2019 / 2023 real exam + FRQ</small></div>
+    <div class="nav">
+      <a href="#home" data-route>Home</a>
+      <a href="#quiz" data-route>Quiz</a>
+      <a href="#mistakes" data-route>Mistakes</a>
+      <a href="#frq" data-route>FRQ</a>
+      <a href="#stats" data-route>Stats</a>
+    </div>
+  </div>
+  <section id="view-home"></section>
+  <section id="view-quiz" style="display:none"></section>
+  <section id="view-mistakes" style="display:none"></section>
+  <section id="view-frq" style="display:none"></section>
+  <section id="view-stats" style="display:none"></section>
 </div>
-<section id="view-home"></section>
-<section id="view-quiz" style="display:none"></section>
-<section id="view-mistakes" style="display:none"></section>
-<section id="view-frq" style="display:none"></section>
-<section id="view-stats" style="display:none"></section>
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3 id="modal-title">Export</h3>
+    <textarea id="modal-text" placeholder="Content will appear here…"></textarea>
+    <div style="font-size:12px;color:var(--ink2);margin-top:8px;line-height:1.6" id="modal-hint"></div>
+    <div class="modal-actions">
+      <button class="btn dark" id="modal-main">Copy</button>
+      <button class="btn ghost" id="modal-file" style="display:none">Download as file</button>
+      <button class="btn ghost" id="modal-close">Close</button>
+    </div>
+  </div>
 </div>
-<div class="modal-bg" id="modal-bg"><div class="modal"><h3 id="modal-title">进度导出</h3><textarea id="modal-text" placeholder="进度内容会显示在这里…"></textarea><div style="font-size:12px;color:var(--ink2);margin-top:8px;line-height:1.6" id="modal-hint"></div><div class="modal-actions"><button class="btn dark" id="modal-main">复制</button><button class="btn ghost" id="modal-file" style="display:none">下载为文件</button><button class="btn ghost" id="modal-close">关闭</button></div></div></div>
 <script>
+/* ===================== 题库 ===================== */
 var QS1=[
-{q:"An economy is operating at a point inside its production possibilities curve (PPC). Which of the following will most likely cause the economy to move toward the current PPC in the short run?",o:["A decrease in government spending","A decrease in inflation","An increase in human capital","An increase in employment","An increase in imports"],a:3,y:2019,u:1,t:"PPC 与经济",e:"点在 PPC 内侧说明资源未充分利用（失业或闲置）。就业增加让经济回到 PPC 上；人力资本增加是让 PPC 本身外移，不是回到当前 PPC。"},
-{q:"An increase in which of the following will most likely promote economic growth?",o:["Taxes on investment","The price level","Human capital","Consumption of nondurable goods","Interest rates"],a:2,y:2019,u:1,t:"经济增长",e:"人力资本（教育、培训、技能）提高劳动生产率，长期推动经济增长。"},
-{q:"Which of the following will cause aggregate supply to increase in Country X?",o:["An increase in personal income taxes","The discovery of low-cost alternative sources of energy","A decrease in labor productivity with no change in nominal wages","Depreciation of Country X's currency","An increase in the price level"],a:1,y:2019,u:3,t:"SRAS 移动",e:"低成本能源 = 大宗商品价格下降 → 生产成本下降 → SRAS 右移（增加）。"},
-{q:"An increase in the price of oil, an important input to production, will result in which of the following in the short run?",o:["A decrease in the price level","A decrease in short-run aggregate supply","A decrease in unemployment","An increase in real wages","An increase in aggregate demand"],a:1,y:2019,u:3,t:"SRAS 移动",e:"油价是 commodity price：油价升 → 生产成本升 → SRAS 左移（减少）。"},
-{q:"An economy is currently operating at the full-employment level of output. Which of the following would result in a recessionary gap in the short run?",o:["An increase in the costs of production","An improvement in the productivity of labor","An increase in money supply","A positive supply shock","A decrease in income tax rates"],a:0,y:2019,u:3,t:"AD-AS 均衡",e:"生产成本上升 → SRAS 左移 → 均衡产出低于潜在产出 = recessionary gap。"},
-{q:"Thailand and Malaysia are trading partners. If the price level in Thailand decreases relative to the price level in Malaysia, what will happen to Thailand's exports to Malaysia and Thailand's aggregate demand?",o:["Thailand's exports increase and Thailand's aggregate demand decreases","Thailand's exports increase and Thailand's aggregate demand increases","Thailand's exports increase and Thailand's aggregate demand is indeterminate","Thailand's exports decrease and Thailand's aggregate demand decreases","Thailand's exports decrease and Thailand's aggregate demand increases"],a:1,y:2019,u:3,t:"AD 净出口效应",e:"泰国价格相对变低 → 商品更便宜 → 出口升 → 净出口升 → AD 右移。正是 AD 向下倾斜的 net-export effect。"},
-{q:"Country X produces only apples and bananas. Year 1: apples $1 x 100, bananas $2 x 50; Year 2: apples $2 x 80, bananas $2 x 60. Using year 1 as the base year, what is the nominal and real GDP for year 2?",o:["Nominal $200, Real $280","Nominal $200, Real $200","Nominal $280, Real $200","Nominal $280, Real $560","Nominal $560, Real $280"],a:2,y:2019,u:2,t:"实际 vs 名义 GDP",e:"Nominal = 2 x 80 + 2 x 60 = 280（当年价格乘当年数量）。Real = 1 x 80 + 2 x 60 = 200（基年价格乘当年数量）。"},
-{q:"Which of the following is a fiscal policy action aimed at reducing unemployment?",o:["Decreasing government expenditures","Decreasing income taxes","Decreasing tax credits","Increasing nominal interest rates","Increasing required reserves"],a:1,y:2019,u:5,t:"财政政策",e:"减税 = 扩张性财政政策 → 可支配收入升 → 消费升 → AD 右移 → 产出升、失业降。利率和准备金率是货币政策工具。"},
-{q:"Increases in human capital can be achieved by which of the following?",o:["Building more factories","Reducing immigration of skilled workers","Improving the quality of job-training programs","Increasing the physical capital per worker","Increasing government spending on infrastructure"],a:2,y:2019,u:1,t:"人力资本",e:"人力资本 = 劳动者的技能与知识。职业培训直接提升人力资本；工厂、机器属于物质资本。"},
-{q:"If the marginal propensity to save is 0.25, a $15 billion increase in government spending will lead to an increase in national income by a maximum of",o:["$60 billion","$45 billion","$15 billion","$11.25 billion","$3.75 billion"],a:0,y:2019,u:3,t:"支出乘数",e:"MPC = 1 - 0.25 = 0.75，支出乘数 = 1/(1-MPC) = 1/0.25 = 4。收入增加 = 4 x 15 = 60（billion）。"},
-{q:"Assume the economy is currently in long-run equilibrium. An increase in the money supply will affect unemployment in the short run and in the long run in which of the following ways?",o:["Short run falls, long run falls","Short run rises, long run rises","Short run no change, long run remains at the natural rate","Short run rises above natural rate, long run falls back to natural rate","Short run falls below natural rate, long run rises back to natural rate"],a:4,y:2019,u:4,t:"货币中性",e:"货币供给升 → 短期利率降、AD 升 → 失业暂时低于自然率；长期价格和工资调整，失业回到自然率（货币长期中性）。"},
-{q:"The term value added for a firm is best defined as which of the following?",o:["The firm's sales","The firm's sales minus depreciation","The firm's sales minus its losses","The firm's sales minus the cost of inputs purchased from other firms","The firm's profits from its sales"],a:3,y:2019,u:2,t:"GDP 增值法",e:"增值 = 销售额 - 从其他企业购买的中间投入，避免 GDP 重复计算。"},
-{q:"Using 2010 as the base year, the GDP deflator in 2011 was 97. Which of the following must be true?",o:["The inflation rate in 2011 was positive","The inflation rate in 2011 was negative","The inflation rate in 2011 was zero","The purchasing power of a dollar decreased by 3 percent","The real output increased by 3 percent"],a:1,y:2019,u:2,t:"GDP 平减指数",e:"deflator 97 < 100 → 价格水平下降（通缩）→ 通胀率为负。"},
-{q:"A fiscal policy action to reduce inflationary pressure would be to increase which of the following?",o:["The required reserve ratio","The discount rate","Transfer payments","Government spending","Income tax rates"],a:4,y:2019,u:5,t:"财政政策",e:"增税 → 可支配收入降 → 消费降 → AD 左移 → 降低通胀压力（紧缩性财政政策）。"},
-{q:"The nominal gross domestic product of China in 2010 is a measure of the total value of which of the following in 2010?",o:["Financial assets, including stocks, in China","Firms located within the borders of China","Final goods and services consumed in China","Final goods and services produced within the borders of China","Final goods and services exported by China to the rest of the world"],a:3,y:2019,u:2,t:"GDP 定义",e:"GDP = 一国境内（无论国籍）生产的最终商品与服务的市场价值。"},
-{q:"Assume the government reduces its spending and raises income taxes in an effort to reduce the budget deficit. The most likely short-run result will be an increase in",o:["Interest rates","Unemployment","The money supply","The price level","Personal savings"],a:1,y:2019,u:5,t:"紧缩财政",e:"G 降 + T 升 = 双紧缩 → AD 左移 → 产出降 → 失业升（短期）。"},
-{q:"Which of the following is true about inflation and interest rates?",o:["The higher the inflation rate, the higher the real interest rate","If there is no actual or expected inflation, the nominal and real interest rates are equal","If the economy is experiencing deflation, the nominal interest rate exceeds the real interest rate","The higher the inflation rate, the lower the nominal interest rate","The nominal interest rate is the difference between the real interest rate and the expected inflation rate"],a:1,y:2019,u:4,t:"名义与实际利率",e:"real = nominal - inflation。没有通胀时，名义利率 = 实际利率。"},
-{q:"Economic growth is shown by a rightward shift in",o:["The aggregate demand curve","The long-run Phillips curve","The production possibilities curve","The short-run aggregate supply curve","The money supply curve"],a:2,y:2019,u:1,t:"经济增长",e:"经济增长 = 生产能力提高 = PPC 或 LRAS 右移（潜在产出增加）。"},
-{q:"During a period of stagflation, a nation is most likely experiencing",o:["High unemployment and low inflation","Low unemployment and high inflation","Low inflationary expectations","A decrease in short-run aggregate supply","An increase in taxes and government spending"],a:3,y:2019,u:3,t:"滞胀",e:"滞胀 = 失业升且通胀升，由负供给冲击（SRAS 左移）造成。"},
-{q:"If businesses become optimistic about the profitability of investments in an economy, which of the following will happen in the loanable funds market in the short run?",o:["The supply and demand for loanable funds will increase","The supply and demand for loanable funds will decrease","The demand for loanable funds by the private sector will decrease","The real interest rate will increase","The real interest rate will decrease"],a:3,y:2019,u:4,t:"可贷资金市场",e:"企业乐观 → 投资需求升 → 可贷资金需求右移 → 实际利率升。"},
-{q:"If investment demand becomes less responsive to changes in interest rates, which of the following is true?",o:["An expansionary fiscal policy results in less crowding out","An expansionary fiscal policy results in more crowding out","An expansionary monetary policy is more effective","A contractionary monetary policy is more effective","An expansionary monetary policy results in more crowding out"],a:0,y:2019,u:5,t:"挤出效应",e:"投资对利率不敏感 → 财政扩张推高利率对投资的挤出越小 → crowding out 越少。"},
-{q:"Which of the following measures the opportunity cost of holding currency?",o:["The nominal wage rate","The increase in the demand for money","The forgone interest on alternative assets","The ability to access currency to meet unexpected expenses","The average income tax rates"],a:2,y:2019,u:4,t:"货币的机会成本",e:"持币放弃的是把资金投到生息资产能赚到的利息。"},
-{q:"Ms. Smith withdraws $1,000 from her safe and deposits the money in a bank. If the bank holds no excess reserves and the reserve requirement is 10 percent, how will this deposit increase the bank's required reserves and the bank's loans?",o:["Required reserves $1,000, loans $9,000","Required reserves $1,000, loans $10,000","Required reserves $900, loans $100","Required reserves $100, loans $900","Required reserves $100, loans $1,000"],a:3,y:2019,u:4,t:"银行与货币创造",e:"法定准备金 = 1000 x 10% = $100；剩余 $900 可贷出。"},
-{q:"Country X has a budget deficit. Which of the following changes in government budget outlays and tax revenues will result in a decrease in Country X's government budget deficit?",o:["Outlays fall by $100 million, tax revenues fall by $600 million","Outlays fall by $200 million, tax revenues fall by $200 million","Outlays rise by $300 million, tax revenues fall by $300 million","Outlays rise by $400 million, tax revenues rise by $600 million","Outlays rise by $500 million, tax revenues rise by $500 million"],a:3,y:2019,u:5,t:"预算赤字",e:"赤字 = 支出 - 收入。选项 D：+400 - (+600) = -200，赤字减少 2 亿美元。"},
-{q:"Country X produces 50 motorcycles OR 80 automobiles; Country Y produces 75 motorcycles OR 40 automobiles, using the same resources. Which of the following is true?",o:["Country X has an absolute and comparative advantage in motorcycles","Country X has an absolute and comparative advantage in both goods","Neither country has a comparative advantage in motorcycles","Country Y has an absolute and comparative advantage in automobiles","Country Y has an absolute and comparative advantage in motorcycles"],a:4,y:2019,u:1,t:"比较优势",e:"摩托车机会成本：X = 80/50 = 1.6 辆汽车，Y = 40/75 ≈ 0.53 辆汽车 → Y 更低 → Y 在摩托车上有比较优势（Y 也占绝对优势，75 > 50）。"}
+{q:"An economy is operating at a point inside its production possibilities curve (PPC). Which of the following will most likely cause the economy to move toward the current PPC in the short run?",o:["A decrease in government spending","A decrease in inflation","An increase in human capital","An increase in employment","An increase in imports"],a:3,y:2019,u:1,t:"Production Possibilities Curve",e:"点在 PPC 内侧说明资源未充分利用（失业或闲置）。就业增加让经济回到 PPC 上；人力资本增加是让 PPC 本身外移，不是回到当前 PPC。"},
+{q:"An increase in which of the following will most likely promote economic growth?",o:["Taxes on investment","The price level","Human capital","Consumption of nondurable goods","Interest rates"],a:2,y:2019,u:1,t:"Economic Growth",e:"人力资本（教育、培训、技能）提高劳动生产率，长期推动经济增长。"},
+{q:"Which of the following will cause aggregate supply to increase in Country X?",o:["An increase in personal income taxes","The discovery of low-cost alternative sources of energy","A decrease in labor productivity with no change in nominal wages","Depreciation of Country X's currency","An increase in the price level"],a:1,y:2019,u:3,t:"Short-Run Aggregate Supply (Shifts)",e:"低成本能源 = 大宗商品价格下降 → 生产成本下降 → SRAS 右移（增加）。"},
+{q:"An increase in the price of oil, an important input to production, will result in which of the following in the short run?",o:["A decrease in the price level","A decrease in short-run aggregate supply","A decrease in unemployment","An increase in real wages","An increase in aggregate demand"],a:1,y:2019,u:3,t:"Short-Run Aggregate Supply (Shifts)",e:"油价是 commodity price：油价升 → 生产成本升 → SRAS 左移（减少）。"},
+{q:"An economy is currently operating at the full-employment level of output. Which of the following would result in a recessionary gap in the short run?",o:["An increase in the costs of production","An improvement in the productivity of labor","An increase in money supply","A positive supply shock","A decrease in income tax rates"],a:0,y:2019,u:3,t:"AD–AS Equilibrium",e:"生产成本上升 → SRAS 左移 → 均衡产出低于潜在产出 = recessionary gap。"},
+{q:"Thailand and Malaysia are trading partners. If the price level in Thailand decreases relative to the price level in Malaysia, what will happen to Thailand's exports to Malaysia and Thailand's aggregate demand?",o:["Thailand's exports increase and Thailand's aggregate demand decreases","Thailand's exports increase and Thailand's aggregate demand increases","Thailand's exports increase and Thailand's aggregate demand is indeterminate","Thailand's exports decrease and Thailand's aggregate demand decreases","Thailand's exports decrease and Thailand's aggregate demand increases"],a:1,y:2019,u:3,t:"Aggregate Demand (Net Exports Effect)",e:"泰国价格相对变低 → 商品更便宜 → 出口升 → 净出口升 → AD 右移。正是 AD 向下倾斜的 net-export effect。"},
+{q:"Country X produces only apples and bananas. Year 1: apples $1 x 100, bananas $2 x 50; Year 2: apples $2 x 80, bananas $2 x 60. Using year 1 as the base year, what is the nominal and real GDP for year 2?",o:["Nominal $200, Real $280","Nominal $200, Real $200","Nominal $280, Real $200","Nominal $280, Real $560","Nominal $560, Real $280"],a:2,y:2019,u:2,t:"Nominal vs. Real GDP",e:"Nominal = 2 x 80 + 2 x 60 = 280（当年价格乘当年数量）。Real = 1 x 80 + 2 x 60 = 200（基年价格乘当年数量）。"},
+{q:"Which of the following is a fiscal policy action aimed at reducing unemployment?",o:["Decreasing government expenditures","Decreasing income taxes","Decreasing tax credits","Increasing nominal interest rates","Increasing required reserves"],a:1,y:2019,u:5,t:"Fiscal Policy",e:"减税 = 扩张性财政政策 → 可支配收入升 → 消费升 → AD 右移 → 产出升、失业降。利率和准备金率是货币政策工具。"},
+{q:"Increases in human capital can be achieved by which of the following?",o:["Building more factories","Reducing immigration of skilled workers","Improving the quality of job-training programs","Increasing the physical capital per worker","Increasing government spending on infrastructure"],a:2,y:2019,u:1,t:"Human Capital",e:"人力资本 = 劳动者的技能与知识。职业培训直接提升人力资本；工厂、机器属于物质资本。"},
+{q:"If the marginal propensity to save is 0.25, a $15 billion increase in government spending will lead to an increase in national income by a maximum of",o:["$60 billion","$45 billion","$15 billion","$11.25 billion","$3.75 billion"],a:0,y:2019,u:3,t:"Spending Multiplier",e:"MPC = 1 - 0.25 = 0.75，支出乘数 = 1/(1-MPC) = 1/0.25 = 4。收入增加 = 4 x 15 = 60（billion）。"},
+{q:"Assume the economy is currently in long-run equilibrium. An increase in the money supply will affect unemployment in the short run and in the long run in which of the following ways?",o:["Short run falls, long run falls","Short run rises, long run rises","Short run no change, long run remains at the natural rate","Short run rises above natural rate, long run falls back to natural rate","Short run falls below natural rate, long run rises back to natural rate"],a:4,y:2019,u:4,t:"Neutrality of Money",e:"货币供给升 → 短期利率降、AD 升 → 失业暂时低于自然率；长期价格和工资调整，失业回到自然率（货币长期中性）。"},
+{q:"The term value added for a firm is best defined as which of the following?",o:["The firm's sales","The firm's sales minus depreciation","The firm's sales minus its losses","The firm's sales minus the cost of inputs purchased from other firms","The firm's profits from its sales"],a:3,y:2019,u:2,t:"GDP (Value Added)",e:"增值 = 销售额 - 从其他企业购买的中间投入，避免 GDP 重复计算。"},
+{q:"Using 2010 as the base year, the GDP deflator in 2011 was 97. Which of the following must be true?",o:["The inflation rate in 2011 was positive","The inflation rate in 2011 was negative","The inflation rate in 2011 was zero","The purchasing power of a dollar decreased by 3 percent","The real output increased by 3 percent"],a:1,y:2019,u:2,t:"GDP Deflator",e:"deflator 97 < 100 → 价格水平下降（通缩）→ 通胀率为负。"},
+{q:"A fiscal policy action to reduce inflationary pressure would be to increase which of the following?",o:["The required reserve ratio","The discount rate","Transfer payments","Government spending","Income tax rates"],a:4,y:2019,u:5,t:"Fiscal Policy",e:"增税 → 可支配收入降 → 消费降 → AD 左移 → 降低通胀压力（紧缩性财政政策）。"},
+{q:"The nominal gross domestic product of China in 2010 is a measure of the total value of which of the following in 2010?",o:["Financial assets, including stocks, in China","Firms located within the borders of China","Final goods and services consumed in China","Final goods and services produced within the borders of China","Final goods and services exported by China to the rest of the world"],a:3,y:2019,u:2,t:"GDP Definition",e:"GDP = 一国境内（无论国籍）生产的最终商品与服务的市场价值。"},
+{q:"Assume the government reduces its spending and raises income taxes in an effort to reduce the budget deficit. The most likely short-run result will be an increase in",o:["Interest rates","Unemployment","The money supply","The price level","Personal savings"],a:1,y:2019,u:5,t:"Contractionary Fiscal Policy",e:"G 降 + T 升 = 双紧缩 → AD 左移 → 产出降 → 失业升（短期）。"},
+{q:"Which of the following is true about inflation and interest rates?",o:["The higher the inflation rate, the higher the real interest rate","If there is no actual or expected inflation, the nominal and real interest rates are equal","If the economy is experiencing deflation, the nominal interest rate exceeds the real interest rate","The higher the inflation rate, the lower the nominal interest rate","The nominal interest rate is the difference between the real interest rate and the expected inflation rate"],a:1,y:2019,u:4,t:"Nominal vs. Real Interest Rate",e:"real = nominal - inflation。没有通胀时，名义利率 = 实际利率。"},
+{q:"Economic growth is shown by a rightward shift in",o:["The aggregate demand curve","The long-run Phillips curve","The production possibilities curve","The short-run aggregate supply curve","The money supply curve"],a:2,y:2019,u:1,t:"Economic Growth",e:"经济增长 = 生产能力提高 = PPC 或 LRAS 右移（潜在产出增加）。"},
+{q:"During a period of stagflation, a nation is most likely experiencing",o:["High unemployment and low inflation","Low unemployment and high inflation","Low inflationary expectations","A decrease in short-run aggregate supply","An increase in taxes and government spending"],a:3,y:2019,u:3,t:"Stagflation",e:"滞胀 = 失业升且通胀升，由负供给冲击（SRAS 左移）造成。"},
+{q:"If businesses become optimistic about the profitability of investments in an economy, which of the following will happen in the loanable funds market in the short run?",o:["The supply and demand for loanable funds will increase","The supply and demand for loanable funds will decrease","The demand for loanable funds by the private sector will decrease","The real interest rate will increase","The real interest rate will decrease"],a:3,y:2019,u:4,t:"Loanable Funds Market",e:"企业乐观 → 投资需求升 → 可贷资金需求右移 → 实际利率升。"},
+{q:"If investment demand becomes less responsive to changes in interest rates, which of the following is true?",o:["An expansionary fiscal policy results in less crowding out","An expansionary fiscal policy results in more crowding out","An expansionary monetary policy is more effective","A contractionary monetary policy is more effective","An expansionary monetary policy results in more crowding out"],a:0,y:2019,u:5,t:"Crowding Out",e:"投资对利率不敏感 → 财政扩张推高利率对投资的挤出越小 → crowding out 越少。"},
+{q:"Which of the following measures the opportunity cost of holding currency?",o:["The nominal wage rate","The increase in the demand for money","The forgone interest on alternative assets","The ability to access currency to meet unexpected expenses","The average income tax rates"],a:2,y:2019,u:4,t:"Money Demand & Opportunity Cost",e:"持币放弃的是把资金投到生息资产能赚到的利息。"},
+{q:"Ms. Smith withdraws $1,000 from her safe and deposits the money in a bank. If the bank holds no excess reserves and the reserve requirement is 10 percent, how will this deposit increase the bank's required reserves and the bank's loans?",o:["Required reserves $1,000, loans $9,000","Required reserves $1,000, loans $10,000","Required reserves $900, loans $100","Required reserves $100, loans $900","Required reserves $100, loans $1,000"],a:3,y:2019,u:4,t:"Banks and Money Creation",e:"法定准备金 = 1000 x 10% = $100；剩余 $900 可贷出。"},
+{q:"Country X has a budget deficit. Which of the following changes in government budget outlays and tax revenues will result in a decrease in Country X's government budget deficit?",o:["Outlays fall by $100 million, tax revenues fall by $600 million","Outlays fall by $200 million, tax revenues fall by $200 million","Outlays rise by $300 million, tax revenues fall by $300 million","Outlays rise by $400 million, tax revenues rise by $600 million","Outlays rise by $500 million, tax revenues rise by $500 million"],a:3,y:2019,u:5,t:"Budget Deficit",e:"赤字 = 支出 - 收入。选项 D：+400 - (+600) = -200，赤字减少 2 亿美元。"},
+{q:"Country X produces 50 motorcycles OR 80 automobiles; Country Y produces 75 motorcycles OR 40 automobiles, using the same resources. Which of the following is true?",o:["Country X has an absolute and comparative advantage in motorcycles","Country X has an absolute and comparative advantage in both goods","Neither country has a comparative advantage in motorcycles","Country Y has an absolute and comparative advantage in automobiles","Country Y has an absolute and comparative advantage in motorcycles"],a:4,y:2019,u:1,t:"Comparative Advantage",e:"摩托车机会成本：X = 80/50 = 1.6 辆汽车，Y = 40/75 ≈ 0.53 辆汽车 → Y 更低 → Y 在摩托车上有比较优势（Y 也占绝对优势，75 > 50）。"}
 ];
 var QS2=[
-{q:"Which of the following is an example of how the consumer price index (CPI) exhibits bias in its estimates of changes in the cost of living?",o:["Energy prices have a higher impact on inflation than other input costs do","New products are always overrepresented in the CPI","The CPI assigns greater weight to measures of welfare than it does to economic activity","Product improvements are not always fully reflected in the calculation of the CPI","The CPI adjusts for the substitution of less expensive goods by consumers"],a:3,y:2019,u:2,t:"CPI 偏差",e:"质量改进未被完全计入 → 价格上涨被高估（质量与新商品偏差）。"},
-{q:"Fred Jones withdraws $1,000 in cash from his savings account. What immediate effect does this transaction have on the monetary aggregates M1 and M2?",o:["M1 increases and M2 decreases","M1 increases and M2 does not change","M1 decreases and M2 does not change","M1 does not change and M2 decreases","M1 does not change and M2 does not change"],a:1,y:2019,u:4,t:"M1 与 M2",e:"取现金：现金（属于 M1）升，储蓄账户（仅属于 M2）降 → M1 增加；现金和储蓄都在 M2 内部，M2 总量不变。"},
-{q:"Which of the following is true about inflationary expectations?",o:["The actual unemployment rate equals the natural rate if the actual inflation rate exceeds the expected inflation rate","The actual unemployment rate equals the natural rate of unemployment when wages fully adjust to expected inflation","Expectations are always correct in the short run","The actual inflation rate is always equal to the expected inflation rate because of labor contracts","The natural rate of unemployment equals the inflation rate when the actual inflation rate equals the expected inflation rate"],a:1,y:2019,u:5,t:"通胀预期与自然率",e:"长期工资完全按预期通胀调整 → 失业回到自然率；预期通胀率决定 SRPC 的位置。"},
-{q:"Which of the following transactions is included in the financial account of Country X's balance of payments accounts?",o:["A firm in Country X sells robots to a firm in Country A","Country X sends financial aid to Country B","An individual in Country X receives dividend payments from a firm in Country C","An individual in Country X sends money monthly to family members in Country D","An individual in Country X buys new government bonds issued by Country E"],a:4,y:2019,u:6,t:"国际收支账户",e:"购买外国政府债券 = 金融资产交易 → 记入金融账户（资本流出）。"},
-{q:"Assume a country's government increases taxes and its central bank decreases the money supply. The actions will result in an increase in which of the following in the short run?",o:["Aggregate demand","Aggregate supply","Investment spending","Unemployment","Inflation"],a:3,y:2019,u:5,t:"政策组合",e:"增税（紧缩财政）+ 货币供给降（紧缩货币）→ AD 左移 → 产出降 → 失业升。"},
-{q:"Which of the following is an assumption underlying an upward-sloping short-run aggregate supply curve?",o:["The economy is experiencing high inflation","The economy is at full employment","National income is fixed","Wages are sticky","The velocity of money is constant"],a:3,y:2019,u:3,t:"SRAS 前提",e:"SRAS 向上倾斜的根源 = 名义工资粘性：价格涨、工资没跟上 → 利润升 → 企业多生产。"},
-{q:"The short-run Phillips curve implies there is a trade-off between",o:["Rule making and discretionary policies","Monetary and fiscal policies","Inflation and unemployment","Budget deficits and interest rates","Interest rates and investment"],a:2,y:2019,u:3,t:"菲利普斯曲线",e:"SRPC 表示短期通胀与失业的此消彼长关系。"},
-{q:"When Stephanie took out a one-year fixed-rate loan, she expected to pay a real interest rate of 3 percent. At the end of the year, the real interest rate had fallen to 2 percent. Which of the following could have caused the decrease in the real interest rate?",o:["There was an increase in the nominal interest rate","There was a decrease in the nominal interest rate","There was a decrease in the money supply","The actual inflation rate was greater than the expected inflation rate","The actual inflation rate was less than the expected inflation rate"],a:3,y:2019,u:4,t:"实际利率",e:"real = nominal - inflation。实际通胀高于预期 → 实际利率低于预期（借款人获利）。"},
-{q:"A continuous increase in the consumer price index (CPI) is",o:["Deflation","Stagflation","Inflation","Recession","Disinflation"],a:2,y:2019,u:2,t:"通胀定义",e:"CPI 持续上升 = 通货膨胀。"},
-{q:"Which of the following would most likely lead to cost-push inflation in the short run?",o:["A decrease in labor productivity","A decrease in income tax rates","A decrease in consumers' and businesses' optimism about future economic activity","An increase in government deficit spending to stimulate a weak economic recovery","Discovery of new sources of energy"],a:0,y:2019,u:3,t:"成本推动通胀",e:"劳动生产率降 → 单位成本升 → SRAS 左移 → 价格升 = cost-push inflation。"},
-{q:"The measured unemployment rate is often criticized for understating the level of joblessness because",o:["Individuals working in the underground economy are counted as employed","Individuals working more than one job are counted more than once","Discouraged workers are counted as unemployed","Discouraged workers are not counted in the labor force","Part-time workers are counted as unemployed"],a:3,y:2019,u:2,t:"失业率缺陷",e:"灰心工人不找工作 → 不算入劳动力 → 被排除在统计外 → 失业率被低估（understate）。"},
-{q:"An economy is in short-run equilibrium at a level of output that is greater than potential output. If there were no active fiscal or monetary policy intervention, which of the following changes in output and the price level would occur in the long run?",o:["Output increases and the price level decreases","Output increases and the price level increases","Output decreases and the price level decreases","Output decreases and the price level increases","Output does not change and the price level does not change"],a:3,y:2019,u:3,t:"长期自我调整",e:"产出高于潜在 → 工资上升 → SRAS 左移 → 产出回到潜在、价格上升。"},
-{q:"The table shows production possibilities for Country X in producing shirts and chairs when it uses all its available resources: (20,0) (16,1) (12,2) (8,3) (4,4) (0,5). The opportunity cost of producing one additional chair is",o:["Zero","Constant","Increasing","Decreasing","Indeterminate"],a:1,y:2019,u:1,t:"机会成本与 PPC",e:"每多产 1 把椅子固定少产 4 件衬衫 → 机会成本不变 → PPC 是直线（而非凹向原点）。"},
-{q:"An increase in which of the following will most likely cause an increase in aggregate demand and inflation in the short run?",o:["Income tax rates","Input prices","Government spending","Real interest rates","Savings"],a:2,y:2019,u:3,t:"AD 与通胀",e:"政府支出升 → AD 右移 → 产出和价格同升（正需求冲击）。"},
-{q:"Which of the following is an example of frictional unemployment?",o:["A former mayor doing volunteer work","A factory worker who loses her job because of recession","A college student working part-time at the campus bookstore","A college graduate interviewing for two available positions","An architect whose job is replaced by computer software that designs buildings"],a:3,y:2019,u:2,t:"摩擦性失业",e:"毕业生面试找工作 = 正常的工作搜寻过程 = frictional。被软件替代是结构性，衰退裁员是周期性。"},
-{q:"Assuming no government policies, which of the following will occur in the long run if the actual unemployment rate exceeds the natural rate of unemployment?",o:["Prices will increase","Unemployment will increase","Wages will fall","Aggregate demand will increase","Long-run aggregate supply will decrease"],a:2,y:2019,u:3,t:"长期自我调整",e:"失业高于自然率 → 劳动力过剩 → 名义工资下降 → SRAS 右移 → 回到充分就业。"},
-{q:"An increase in government spending that is financed by an equal increase in taxes results in which of the following changes in the aggregate demand (AD) and short-run aggregate supply (SRAS) curves?",o:["AD shifts right, SRAS shifts right","AD shifts left, SRAS shifts left","AD shifts right, SRAS does not change","AD shifts left, SRAS does not change","Neither AD nor SRAS changes"],a:2,y:2019,u:5,t:"平衡预算乘数",e:"G 升完全由 T 升融资：AD 仍右移（政府支出乘数大于税收乘数绝对值，平衡预算乘数 = 1）。SRAS 不变。"},
-{q:"Assume that the United States current account balance is zero. If the United States dollar appreciates against the Japanese yen, then demand for United States exports will",o:["Increase and result in a deficit in the United States financial account","Increase and result in a surplus in the United States financial account","Decrease and result in a surplus in the United States financial account","Decrease and result in a deficit in the United States financial account","Remain unchanged because the surplus in the current account will be offset by the deficit in the financial account"],a:2,y:2019,u:6,t:"汇率与净出口",e:"美元升值 → 美国商品对外变贵 → 出口需求降 → 经常账户恶化 → 金融账户转为盈余（CA + CFA = 0）。"},
-{q:"If the government decreases spending while the country's central bank buys bonds on the open market, which of the following will definitely occur?",o:["The aggregate demand curve will shift to the right","The aggregate demand curve will shift to the left","The short-run aggregate supply curve will shift to the right","Interest rates will fall","Interest rates will rise"],a:3,y:2019,u:5,t:"政策组合",e:"央行买债券 → 货币供给升 → 利率降（确定结果）；AD 方向不定，两股力量相反。"},
-{q:"Which of the following best illustrates rising productivity?",o:["An expansion of the labor force","An increase in the value of financial capital","A decrease in the amount of physical capital per worker","A decrease in the amount of labor needed to produce a unit of output","An increase in the amount of resources required to produce a certain level of output"],a:3,y:2019,u:1,t:"生产率",e:"生产率 = 每单位投入的产出。生产一单位产出所需劳动减少 = 生产率上升。"},
-{q:"Which of the following will most likely cause a depreciation in a country's currency?",o:["An increase in the country's price level","An increase in the country's real interest rate","A decrease in the country's expected inflation","A decrease in the country's real gross domestic product","A decrease in the country's money supply"],a:0,y:2019,u:6,t:"汇率贬值",e:"国内物价升 → 出口竞争力降、进口吸引力升 → 货币需求降 → 货币贬值。"},
-{q:"Banks create money when",o:["They make loans","The loans they make are repaid","They keep all excess reserves","Customers increase their cash withdrawals from their savings accounts","The money multiplier is less than one"],a:0,y:2019,u:4,t:"货币创造",e:"银行放贷把超额准备金变成新存款（部分准备金制度）→ 货币乘数放大货币供给。"},
-{q:"Which of the following is true about a country's national debt?",o:["It is the sum of the country's trade deficit and government budget deficit","It increases when gross domestic product increases","It increases when the country's government has a budget deficit","It decreases when the country's exports exceed its imports","It decreases when national savings decrease"],a:2,y:2019,u:5,t:"国债",e:"国家债务 = 历年预算赤字的累积。政府赤字（支出大于收入）→ 国债增加。"},
-{q:"If the expected inflation rate is 6%, the nominal interest rate is 2%, and the actual inflation rate is 4%, what is the actual real interest rate?",o:["-4%","-2%","2%","4%","6%"],a:1,y:2023,u:4,t:"实际利率",e:"实际利率 = 名义利率 - 实际通胀 = 2% - 4% = -2%。注意用 actual inflation 而不是 expected。"},
-{q:"If the money supply is $40,000, consumer spending is $30,000, and nominal output is $50,000, what is the velocity of money according to the quantity theory of money?",o:["0.6","0.75","0.8","1.25","1.67"],a:3,y:2023,u:4,t:"货币数量论",e:"M x V = P x Y → V = 名义产出 / 货币量 = 50,000 / 40,000 = 1.25。"},
-{q:"Year 2019: nominal GDP $4,000, GDP deflator 100; Year 2020: nominal GDP $5,000, GDP deflator 125. Which conclusion can be drawn from 2019 to 2020?",o:["Nominal GDP increased by 40%","Nominal GDP increased by 20%","Real GDP increased by 25%","Real GDP did not change","The inflation rate was 20%"],a:3,y:2023,u:2,t:"实际 vs 名义 GDP",e:"Real 2020 = 5000 / 1.25 = 4000 = Real 2019（4000 / 1.00）→ 实际 GDP 不变。"},
-{q:"Country X is experiencing demand-pull inflation from increased consumer spending. If the banking system has ample reserves, which fiscal and monetary policy combination would be most effective to reduce inflation in the short run?",o:["Decrease government spending and increase administered interest rates","Decrease government spending and decrease administered interest rates","Increase income taxes and decrease administered interest rates","Decrease income taxes and increase administered interest rates","Increase transfer payments and increase administered interest rates"],a:0,y:2023,u:5,t:"反通胀政策",e:"紧缩财政（减 G / 增税）+ 紧缩货币（提高政策利率）双管齐下压 AD。"},
-{q:"Suppose the marginal propensity to consume is 0.8. If government spending increases by $15 million and personal income taxes increase by $20 million, what will be the maximum possible change in aggregate demand in the short run?",o:["A decrease of $5 million","An increase of $5 million","A decrease of $15 million","An increase of $15 million","A decrease of $20 million"],a:0,y:2023,u:3,t:"乘数计算",e:"支出乘数 = 1/(1-0.8) = 5；税收乘数 = -0.8/(1-0.8) = -4。ΔAD = 5 x 15 + (-4) x 20 = 75 - 80 = -5（百万）。"},
-{q:"If a government implements an expansionary fiscal policy, what is most likely to happen to the price level and the unemployment rate in the short run if there is no crowding out?",o:["Price level increases and unemployment increases","Price level increases and unemployment remains the same","Price level increases and unemployment decreases","Price level decreases and unemployment increases","Price level decreases and unemployment decreases"],a:2,y:2023,u:5,t:"扩张性财政政策",e:"扩张性财政 → AD 右移 → 产出升（失业降）且价格升。"},
-{q:"If the number of people employed is 140 million, unemployed is 20 million, and the civilian noninstitutional population aged 16 and over is 200 million, then the labor force participation rate is",o:["10.0%","12.5%","60.0%","70.0%","80.0%"],a:4,y:2023,u:2,t:"劳动力参与率",e:"LFPR = 劳动力 / 适龄人口 = (140+20) / 200 = 80%。分母是适龄人口，不是劳动力。"},
-{q:"Assuming the marginal propensity to consume is less than 1, which of the following describes why the magnitude of the tax multiplier is smaller than the magnitude of the expenditure multiplier?",o:["Changes in income taxes initially affect both household consumption and household savings","Changes in income taxes initially affect household savings only","Changes in income taxes initially affect net investment instead of consumption","Changes in income taxes initially affect exports only","Changes in income taxes initially affect firms only"],a:0,y:2023,u:3,t:"税收乘数",e:"减税的一部分被储蓄（MPC 小于 1）→ 只有进入消费的部分传导 → 税收乘数（-MPC/MPS）绝对值小于支出乘数。"},
-{q:"Assume the banking system in Nation K has limited reserves. Which of the following would most likely lead to a decrease in nominal interest rates in Nation K?",o:["The central bank buys government securities","The central bank increases the required reserve ratio","The government decreases income taxes","The government increases unemployment benefits","The government increases spending"],a:0,y:2023,u:5,t:"货币政策",e:"央行买证券（扩张性 OMO）→ 准备金升 → 货币供给升 → 利率降。"},
-{q:"Suppose the country of Stalia is in a recession, and the central bank carries out expansionary monetary policy. As a result, what will happen to its natural rate of unemployment in the short run?",o:["It will increase as frictional unemployment increases","It will increase as structural unemployment decreases","It will decrease as cyclical unemployment increases","It will decrease as structural and cyclical unemployment decrease","It will remain the same as cyclical unemployment decreases"],a:4,y:2023,u:2,t:"自然失业率",e:"货币政策只影响周期性失业；自然失业率（= 摩擦 + 结构）短期不变。"},
-{q:"Why is the unemployment rate an imperfect measure of joblessness?",o:["It includes workers who are on strike","It counts discouraged workers","It excludes the frictionally unemployed","It does not include the number of underemployed workers","It overestimates the number of individuals who are self-employed"],a:3,y:2023,u:2,t:"失业率缺陷",e:"非自愿兼职者（underemployed）被算作就业 → 失业率低估真实失业压力。"},
-{q:"Assume a banking system has limited reserves and the required reserve ratio is 0.25. If an individual deposits $1,000 cash into a checking account, what is the immediate effect on M1 and the maximum possible change in M1?",o:["No change and $1,000 increase","No change and $3,000 increase","No change and $4,000 increase","$1,000 increase and $3,000 increase","$1,000 increase and $4,000 increase"],a:2,y:2023,u:4,t:"货币乘数",e:"现金 → 活期存款：两者都是 M1，立即无变化。最大变化 = 1000 x (1/0.25) = $4,000。"}
+{q:"Which of the following is an example of how the consumer price index (CPI) exhibits bias in its estimates of changes in the cost of living?",o:["Energy prices have a higher impact on inflation than other input costs do","New products are always overrepresented in the CPI","The CPI assigns greater weight to measures of welfare than it does to economic activity","Product improvements are not always fully reflected in the calculation of the CPI","The CPI adjusts for the substitution of less expensive goods by consumers"],a:3,y:2019,u:2,t:"CPI Bias",e:"质量改进未被完全计入 → 价格上涨被高估（质量与新商品偏差）。"},
+{q:"Fred Jones withdraws $1,000 in cash from his savings account. What immediate effect does this transaction have on the monetary aggregates M1 and M2?",o:["M1 increases and M2 decreases","M1 increases and M2 does not change","M1 decreases and M2 does not change","M1 does not change and M2 decreases","M1 does not change and M2 does not change"],a:1,y:2019,u:4,t:"M1 and M2",e:"取现金：现金（属于 M1）升，储蓄账户（仅属于 M2）降 → M1 增加；现金和储蓄都在 M2 内部，M2 总量不变。"},
+{q:"Which of the following is true about inflationary expectations?",o:["The actual unemployment rate equals the natural rate if the actual inflation rate exceeds the expected inflation rate","The actual unemployment rate equals the natural rate of unemployment when wages fully adjust to expected inflation","Expectations are always correct in the short run","The actual inflation rate is always equal to the expected inflation rate because of labor contracts","The natural rate of unemployment equals the inflation rate when the actual inflation rate equals the expected inflation rate"],a:1,y:2019,u:5,t:"Inflationary Expectations & Natural Rate",e:"长期工资完全按预期通胀调整 → 失业回到自然率；预期通胀率决定 SRPC 的位置。"},
+{q:"Which of the following transactions is included in the financial account of Country X's balance of payments accounts?",o:["A firm in Country X sells robots to a firm in Country A","Country X sends financial aid to Country B","An individual in Country X receives dividend payments from a firm in Country C","An individual in Country X sends money monthly to family members in Country D","An individual in Country X buys new government bonds issued by Country E"],a:4,y:2019,u:6,t:"Balance of Payments",e:"购买外国政府债券 = 金融资产交易 → 记入金融账户（资本流出）。"},
+{q:"Assume a country's government increases taxes and its central bank decreases the money supply. The actions will result in an increase in which of the following in the short run?",o:["Aggregate demand","Aggregate supply","Investment spending","Unemployment","Inflation"],a:3,y:2019,u:5,t:"Policy Mix",e:"增税（紧缩财政）+ 货币供给降（紧缩货币）→ AD 左移 → 产出降 → 失业升。"},
+{q:"Which of the following is an assumption underlying an upward-sloping short-run aggregate supply curve?",o:["The economy is experiencing high inflation","The economy is at full employment","National income is fixed","Wages are sticky","The velocity of money is constant"],a:3,y:2019,u:3,t:"SRAS Assumption (Sticky Wages)",e:"SRAS 向上倾斜的根源 = 名义工资粘性：价格涨、工资没跟上 → 利润升 → 企业多生产。"},
+{q:"The short-run Phillips curve implies there is a trade-off between",o:["Rule making and discretionary policies","Monetary and fiscal policies","Inflation and unemployment","Budget deficits and interest rates","Interest rates and investment"],a:2,y:2019,u:3,t:"Phillips Curve",e:"SRPC 表示短期通胀与失业的此消彼长关系。"},
+{q:"When Stephanie took out a one-year fixed-rate loan, she expected to pay a real interest rate of 3 percent. At the end of the year, the real interest rate had fallen to 2 percent. Which of the following could have caused the decrease in the real interest rate?",o:["There was an increase in the nominal interest rate","There was a decrease in the nominal interest rate","There was a decrease in the money supply","The actual inflation rate was greater than the expected inflation rate","The actual inflation rate was less than the expected inflation rate"],a:3,y:2019,u:4,t:"Real Interest Rate",e:"real = nominal - inflation。实际通胀高于预期 → 实际利率低于预期（借款人获利）。"},
+{q:"A continuous increase in the consumer price index (CPI) is",o:["Deflation","Stagflation","Inflation","Recession","Disinflation"],a:2,y:2019,u:2,t:"Inflation Definition",e:"CPI 持续上升 = 通货膨胀。"},
+{q:"Which of the following would most likely lead to cost-push inflation in the short run?",o:["A decrease in labor productivity","A decrease in income tax rates","A decrease in consumers' and businesses' optimism about future economic activity","An increase in government deficit spending to stimulate a weak economic recovery","Discovery of new sources of energy"],a:0,y:2019,u:3,t:"Cost-Push Inflation",e:"劳动生产率降 → 单位成本升 → SRAS 左移 → 价格升 = cost-push inflation。"},
+{q:"The measured unemployment rate is often criticized for understating the level of joblessness because",o:["Individuals working in the underground economy are counted as employed","Individuals working more than one job are counted more than once","Discouraged workers are counted as unemployed","Discouraged workers are not counted in the labor force","Part-time workers are counted as unemployed"],a:3,y:2019,u:2,t:"Unemployment Rate Limitations",e:"灰心工人不找工作 → 不算入劳动力 → 被排除在统计外 → 失业率被低估（understate）。"},
+{q:"An economy is in short-run equilibrium at a level of output that is greater than potential output. If there were no active fiscal or monetary policy intervention, which of the following changes in output and the price level would occur in the long run?",o:["Output increases and the price level decreases","Output increases and the price level increases","Output decreases and the price level decreases","Output decreases and the price level increases","Output does not change and the price level does not change"],a:3,y:2019,u:3,t:"Long-Run Self-Adjustment",e:"产出高于潜在 → 工资上升 → SRAS 左移 → 产出回到潜在、价格上升。"},
+{q:"The table shows production possibilities for Country X in producing shirts and chairs when it uses all its available resources: (20,0) (16,1) (12,2) (8,3) (4,4) (0,5). The opportunity cost of producing one additional chair is",o:["Zero","Constant","Increasing","Decreasing","Indeterminate"],a:1,y:2019,u:1,t:"Opportunity Cost & PPC",e:"每多产 1 把椅子固定少产 4 件衬衫 → 机会成本不变 → PPC 是直线（而非凹向原点）。"},
+{q:"An increase in which of the following will most likely cause an increase in aggregate demand and inflation in the short run?",o:["Income tax rates","Input prices","Government spending","Real interest rates","Savings"],a:2,y:2019,u:3,t:"AD and Inflation",e:"政府支出升 → AD 右移 → 产出和价格同升（正需求冲击）。"},
+{q:"Which of the following is an example of frictional unemployment?",o:["A former mayor doing volunteer work","A factory worker who loses her job because of recession","A college student working part-time at the campus bookstore","A college graduate interviewing for two available positions","An architect whose job is replaced by computer software that designs buildings"],a:3,y:2019,u:2,t:"Frictional Unemployment",e:"毕业生面试找工作 = 正常的工作搜寻过程 = frictional。被软件替代是结构性，衰退裁员是周期性。"},
+{q:"Assuming no government policies, which of the following will occur in the long run if the actual unemployment rate exceeds the natural rate of unemployment?",o:["Prices will increase","Unemployment will increase","Wages will fall","Aggregate demand will increase","Long-run aggregate supply will decrease"],a:2,y:2019,u:3,t:"Long-Run Self-Adjustment",e:"失业高于自然率 → 劳动力过剩 → 名义工资下降 → SRAS 右移 → 回到充分就业。"},
+{q:"An increase in government spending that is financed by an equal increase in taxes results in which of the following changes in the aggregate demand (AD) and short-run aggregate supply (SRAS) curves?",o:["AD shifts right, SRAS shifts right","AD shifts left, SRAS shifts left","AD shifts right, SRAS does not change","AD shifts left, SRAS does not change","Neither AD nor SRAS changes"],a:2,y:2019,u:5,t:"Balanced Budget Multiplier",e:"G 升完全由 T 升融资：AD 仍右移（政府支出乘数大于税收乘数绝对值，平衡预算乘数 = 1）。SRAS 不变。"},
+{q:"Assume that the United States current account balance is zero. If the United States dollar appreciates against the Japanese yen, then demand for United States exports will",o:["Increase and result in a deficit in the United States financial account","Increase and result in a surplus in the United States financial account","Decrease and result in a surplus in the United States financial account","Decrease and result in a deficit in the United States financial account","Remain unchanged because the surplus in the current account will be offset by the deficit in the financial account"],a:2,y:2019,u:6,t:"Exchange Rate & Net Exports",e:"美元升值 → 美国商品对外变贵 → 出口需求降 → 经常账户恶化 → 金融账户转为盈余（CA + CFA = 0）。"},
+{q:"If the government decreases spending while the country's central bank buys bonds on the open market, which of the following will definitely occur?",o:["The aggregate demand curve will shift to the right","The aggregate demand curve will shift to the left","The short-run aggregate supply curve will shift to the right","Interest rates will fall","Interest rates will rise"],a:3,y:2019,u:5,t:"Policy Mix",e:"央行买债券 → 货币供给升 → 利率降（确定结果）；AD 方向不定，两股力量相反。"},
+{q:"Which of the following best illustrates rising productivity?",o:["An expansion of the labor force","An increase in the value of financial capital","A decrease in the amount of physical capital per worker","A decrease in the amount of labor needed to produce a unit of output","An increase in the amount of resources required to produce a certain level of output"],a:3,y:2019,u:1,t:"Productivity",e:"生产率 = 每单位投入的产出。生产一单位产出所需劳动减少 = 生产率上升。"},
+{q:"Which of the following will most likely cause a depreciation in a country's currency?",o:["An increase in the country's price level","An increase in the country's real interest rate","A decrease in the country's expected inflation","A decrease in the country's real gross domestic product","A decrease in the country's money supply"],a:0,y:2019,u:6,t:"Currency Depreciation",e:"国内物价升 → 出口竞争力降、进口吸引力升 → 货币需求降 → 货币贬值。"},
+{q:"Banks create money when",o:["They make loans","The loans they make are repaid","They keep all excess reserves","Customers increase their cash withdrawals from their savings accounts","The money multiplier is less than one"],a:0,y:2019,u:4,t:"Money Creation",e:"银行放贷把超额准备金变成新存款（部分准备金制度）→ 货币乘数放大货币供给。"},
+{q:"Which of the following is true about a country's national debt?",o:["It is the sum of the country's trade deficit and government budget deficit","It increases when gross domestic product increases","It increases when the country's government has a budget deficit","It decreases when the country's exports exceed its imports","It decreases when national savings decrease"],a:2,y:2019,u:5,t:"National Debt",e:"国家债务 = 历年预算赤字的累积。政府赤字（支出大于收入）→ 国债增加。"},
+{q:"If the expected inflation rate is 6%, the nominal interest rate is 2%, and the actual inflation rate is 4%, what is the actual real interest rate?",o:["-4%","-2%","2%","4%","6%"],a:1,y:2023,u:4,t:"Real Interest Rate",e:"实际利率 = 名义利率 - 实际通胀 = 2% - 4% = -2%。注意用 actual inflation 而不是 expected。"},
+{q:"If the money supply is $40,000, consumer spending is $30,000, and nominal output is $50,000, what is the velocity of money according to the quantity theory of money?",o:["0.6","0.75","0.8","1.25","1.67"],a:3,y:2023,u:4,t:"Quantity Theory of Money",e:"M x V = P x Y → V = 名义产出 / 货币量 = 50,000 / 40,000 = 1.25。"},
+{q:"Year 2019: nominal GDP $4,000, GDP deflator 100; Year 2020: nominal GDP $5,000, GDP deflator 125. Which conclusion can be drawn from 2019 to 2020?",o:["Nominal GDP increased by 40%","Nominal GDP increased by 20%","Real GDP increased by 25%","Real GDP did not change","The inflation rate was 20%"],a:3,y:2023,u:2,t:"Nominal vs. Real GDP",e:"Real 2020 = 5000 / 1.25 = 4000 = Real 2019（4000 / 1.00）→ 实际 GDP 不变。"},
+{q:"Country X is experiencing demand-pull inflation from increased consumer spending. If the banking system has ample reserves, which fiscal and monetary policy combination would be most effective to reduce inflation in the short run?",o:["Decrease government spending and increase administered interest rates","Decrease government spending and decrease administered interest rates","Increase income taxes and decrease administered interest rates","Decrease income taxes and increase administered interest rates","Increase transfer payments and increase administered interest rates"],a:0,y:2023,u:5,t:"Anti-Inflationary Policy",e:"紧缩财政（减 G / 增税）+ 紧缩货币（提高政策利率）双管齐下压 AD。"},
+{q:"Suppose the marginal propensity to consume is 0.8. If government spending increases by $15 million and personal income taxes increase by $20 million, what will be the maximum possible change in aggregate demand in the short run?",o:["A decrease of $5 million","An increase of $5 million","A decrease of $15 million","An increase of $15 million","A decrease of $20 million"],a:0,y:2023,u:3,t:"Multiplier Calculations",e:"支出乘数 = 1/(1-0.8) = 5；税收乘数 = -0.8/(1-0.8) = -4。ΔAD = 5 x 15 + (-4) x 20 = 75 - 80 = -5（百万）。"},
+{q:"If a government implements an expansionary fiscal policy, what is most likely to happen to the price level and the unemployment rate in the short run if there is no crowding out?",o:["Price level increases and unemployment increases","Price level increases and unemployment remains the same","Price level increases and unemployment decreases","Price level decreases and unemployment increases","Price level decreases and unemployment decreases"],a:2,y:2023,u:5,t:"Expansionary Fiscal Policy",e:"扩张性财政 → AD 右移 → 产出升（失业降）且价格升。"},
+{q:"If the number of people employed is 140 million, unemployed is 20 million, and the civilian noninstitutional population aged 16 and over is 200 million, then the labor force participation rate is",o:["10.0%","12.5%","60.0%","70.0%","80.0%"],a:4,y:2023,u:2,t:"Labor Force Participation Rate",e:"LFPR = 劳动力 / 适龄人口 = (140+20) / 200 = 80%。分母是适龄人口，不是劳动力。"},
+{q:"Assuming the marginal propensity to consume is less than 1, which of the following describes why the magnitude of the tax multiplier is smaller than the magnitude of the expenditure multiplier?",o:["Changes in income taxes initially affect both household consumption and household savings","Changes in income taxes initially affect household savings only","Changes in income taxes initially affect net investment instead of consumption","Changes in income taxes initially affect exports only","Changes in income taxes initially affect firms only"],a:0,y:2023,u:3,t:"Tax Multiplier",e:"减税的一部分被储蓄（MPC 小于 1）→ 只有进入消费的部分传导 → 税收乘数（-MPC/MPS）绝对值小于支出乘数。"},
+{q:"Assume the banking system in Nation K has limited reserves. Which of the following would most likely lead to a decrease in nominal interest rates in Nation K?",o:["The central bank buys government securities","The central bank increases the required reserve ratio","The government decreases income taxes","The government increases unemployment benefits","The government increases spending"],a:0,y:2023,u:5,t:"Monetary Policy",e:"央行买证券（扩张性 OMO）→ 准备金升 → 货币供给升 → 利率降。"},
+{q:"Suppose the country of Stalia is in a recession, and the central bank carries out expansionary monetary policy. As a result, what will happen to its natural rate of unemployment in the short run?",o:["It will increase as frictional unemployment increases","It will increase as structural unemployment decreases","It will decrease as cyclical unemployment increases","It will decrease as structural and cyclical unemployment decrease","It will remain the same as cyclical unemployment decreases"],a:4,y:2023,u:2,t:"Natural Rate of Unemployment",e:"货币政策只影响周期性失业；自然失业率（= 摩擦 + 结构）短期不变。"},
+{q:"Why is the unemployment rate an imperfect measure of joblessness?",o:["It includes workers who are on strike","It counts discouraged workers","It excludes the frictionally unemployed","It does not include the number of underemployed workers","It overestimates the number of individuals who are self-employed"],a:3,y:2023,u:2,t:"Unemployment Rate Limitations",e:"非自愿兼职者（underemployed）被算作就业 → 失业率低估真实失业压力。"},
+{q:"Assume a banking system has limited reserves and the required reserve ratio is 0.25. If an individual deposits $1,000 cash into a checking account, what is the immediate effect on M1 and the maximum possible change in M1?",o:["No change and $1,000 increase","No change and $3,000 increase","No change and $4,000 increase","$1,000 increase and $3,000 increase","$1,000 increase and $4,000 increase"],a:2,y:2023,u:4,t:"Money Multiplier",e:"现金 → 活期存款：两者都是 M1，立即无变化。最大变化 = 1000 x (1/0.25) = $4,000。"}
 ];
 var FRS=[
-{y:2023,t:"AD-AS + 成本推动通胀 + 货币政策",q:"The economy of Shaunland is in long-run equilibrium.\n(a) Draw a correctly labeled graph of AD, SRAS and LRAS; label equilibrium Y1 and PL1, and full-employment output YF.\n(b) Assume the price of steel increases and Shaunland relies heavily on steel. Show the short-run effect on equilibrium output Y2 and price level PL2.\n(c) Is Shaunland experiencing cost-push inflation, demand-pull inflation, or deflation? Explain.\n(d) Assume no policy action. Based on (c), explain how the economy will adjust in the long run.\n(e) The banking system has limited reserves. Identify the appropriate open-market operation to offset the price-level effect.\n(f) Draw a correctly labeled money market graph; show the effect on the equilibrium nominal interest rate.\n(g) Based on the interest rate change, what will happen to (i) the actual unemployment rate in the short run, and (ii) international financial capital flows?",ans:"(c) Cost-push inflation——钢价是重要投入品，成本上升使 SRAS 左移，是成本推动而非需求拉动。\n(d) 长期：失业高于自然率 → 名义工资下降 → SRAS 右移回原位 → 产出回到 YF、价格回落（若冲击是暂时的）。\n(e) 买债券（open-market purchase，扩张性 OMO），增加货币供给，对冲价格水平压力。\n(f) MS 右移 → 名义利率下降。\n(g) (i) 利率降 → 投资和消费升 → AD 右移 → 产出升 → 失业率下降。(ii) 利率降 → 本国资产吸引力下降 → 资本流出增加。"},
-{y:2023,t:"乘数计算 + 汇率",q:"The economy of the United States is currently operating below full employment.\n(a) Assume the government wants to increase aggregate demand by $200 billion and the MPC is 0.8.\n(i) Calculate the minimum change in government spending needed and state its direction. Show your work.\n(ii) Suppose the government instead changes income taxes. Calculate the minimum change needed and state its direction. Show your work.\n(b) Assume that, due to the policy, the value of the dollar depreciates. Would net exports increase, decrease, or remain the same? Explain.\n(c) Draw a correctly labeled foreign exchange market graph for the dollar and show the effect of the change in net exports on the international value of the dollar.",ans:"(a)(i) 支出乘数 = 1/(1-0.8) = 5 → ΔG = 200/5 = $40 billion（增加，increase）。\n(ii) 税收乘数 = -0.8/(1-0.8) = -4 → ΔT = 200/(-4) = -$50 billion，即减税 $50 billion（decrease）。\n(b) Net exports increase：美元贬值 → 美国商品对外更便宜 → 出口升、进口降 → NX 升。\n(c) 汇率图：标好坐标轴（数量、汇率/美元价格）与供需曲线，按 NX 变化画出移动方向并标注新的均衡汇率。评分点：正确标注坐标轴、曲线移动方向。"},
-{y:2023,t:"GDP 计算",q:"The table provides macroeconomic data for the economy of Liang Island in 2020. The GDP deflator was 150.\nPersonal Consumption $70M, Government Spending $25M, Gross Private Domestic Investment $10M, Personal Income $90M, Exports $20M, Imports $5M, Population 5.\n(a) Calculate nominal GDP in 2020. Show your work.\n(b) Based on (a), calculate real GDP in 2020. Show your work.\n(c) Explain the conceptual difference between nominal GDP and real GDP.\n(d) Assume real GDP in 2019 was $120M and population did not change. Did the economy experience economic growth in per capita terms in 2020? Explain using numbers.\n(e) What is one specific fiscal policy action the government can take to promote long-run economic growth? Explain.",ans:"(a) NGDP = C + I + G + (X - M) = 70 + 10 + 25 + (20 - 5) = $120M。\n(b) RGDP = NGDP / deflator x 100 = 120 / 150 x 100 = $80M。\n(c) Nominal GDP 用当年价格、Real GDP 用基年价格；名义变动可能来自价格变化，实际变动只反映数量变化。\n(d) 人均实际 GDP：2019 = 120/5 = 24；2020 = 80/5 = 16 → 下降，没有经济增长（人均实际 GDP 减少）。\n(e) 例如增加教育支出（提高人力资本）→ 提高劳动生产率 → LRAS / PPC 右移 → 长期增长。"},
-{y:2019,t:"菲利普斯曲线 + 货币创造",q:"Assume a country's economy is currently in recession.\n(a) Draw a correctly labeled graph of the long-run and short-run Phillips curves. Label the current equilibrium as point Z.\n(b) Banks hold no excess reserves and the required reserve ratio is 25%. The central bank buys $100 billion in bonds from the nonbank public.\n(i) By how much will the monetary base change?\n(ii) Calculate the change in the amount of loans in the banking system.\n(iii) Calculate the change in the money supply.\n(c) Draw a correctly labeled graph of the money market and show the effect of the change in the money supply on the nominal interest rate.\n(d) Assume no change in inflationary expectations. On your graph in part (a), label a point W consistent with the interest rate change.\n(e) Based on the interest rate change, how will the international value of the currency change?\n(f) Based on your answer to (e), will the country's net exports increase, decrease, or stay the same? Explain.",ans:"(a) 点 Z 在 SRPC 上、LRPC 右侧（失业高于自然率）。\n(b) (i) 货币基础增加 $100 billion。(ii) 贷款增加 = 货币乘数 4 x (100 - 25) = $300 billion。(iii) 货币供给增加 = 4 x 100 = $400 billion（乘数 = 1/0.25 = 4）。\n(c) MS 右移 → 名义利率下降。\n(d) 点 W 在 Z 左侧（失业下降、通胀上升，沿 SRPC 移动）。\n(e) 利率降 → 资本外流 → 货币贬值（depreciate）。\n(f) Net exports increase：本国商品相对更便宜。"},
-{y:2019,t:"可贷资金 + 外汇干预",q:"Suppose the US government implements a fiscal policy that increases the budget surplus.\n(a) Draw a correctly labeled graph of the loanable funds market and show the effect of the increase in the budget surplus on the equilibrium real interest rate.\n(b) The EU is a major trading partner. Given your answer to (a), will the US dollar appreciate or depreciate against the euro? Explain.\n(c) Suppose the Federal Reserve decides to offset the change in the value of the dollar.\n(i) Would the Fed buy or sell the euro?\n(ii) Would the Fed buy or sell the dollar?\n(d) Suppose the Fed wants to counteract the real interest rate change in (a). What open-market operation would the Fed use?",ans:"(a) 预算盈余升 = 政府储蓄升 → 可贷资金供给右移 → 实际利率下降。\n(b) 美元贬值（depreciate）：利率降 → 美国资产回报率降 → 资本流出 → 美元需求降。\n(c) (i) 卖出欧元；(ii) 买入美元（抛欧元买美元，支撑美元）。\n(d) 卖债券（紧缩性 OMO）：减少货币供给 → 利率回升。"},
-{y:2019,t:"GDP / CPI 计算",q:"Fruitland produces two goods, apples and oranges.\nYear 1: apples 4 units at $15 each; oranges 10 units at $4 each.\nYear 2: apples 10 units at $6 each; oranges 20 units at $5 each.\n(a) Calculate the nominal GDP for year 2.\n(b) Using year 1 as the base year, calculate real GDP for year 2.\n(c) Calculate the GDP deflator for year 2.\n(d) Assuming the market basket is composed of the quantities in year 1, calculate the CPI for year 2.\n(e) Suppose apple and orange pickers received a 2 percent increase in their wages. Based on your answer to (d), would real wages increase, decrease, or stay the same from year 1 to year 2? Explain.",ans:"(a) NGDP2 = 6 x 10 + 5 x 20 = 60 + 100 = 160。\n(b) RGDP2 = 4 x 10 + 10 x 20 = 40 + 200 = 240。\n(c) Deflator = 160 / 240 x 100 ≈ 67（价格水平下降）。\n(d) 篮子 = 基年数量：Year 1 成本 = 4 x 15 + 10 x 4 = 100；Year 2 成本 = 4 x 6 + 10 x 5 = 74；CPI = 74 / 100 x 100 = 74。\n(e) 名义工资 +2%，但 CPI 显示价格下降约 26% → 实际工资上升（购买力增强）。评分点：结论 + 用数字解释。"}
+{y:2023,t:"AD–AS + Cost-Push Inflation + Monetary Policy",q:"The economy of Shaunland is in long-run equilibrium.\n(a) Draw a correctly labeled graph of AD, SRAS and LRAS; label equilibrium Y1 and PL1, and full-employment output YF.\n(b) Assume the price of steel increases and Shaunland relies heavily on steel. Show the short-run effect on equilibrium output Y2 and price level PL2.\n(c) Is Shaunland experiencing cost-push inflation, demand-pull inflation, or deflation? Explain.\n(d) Assume no policy action. Based on (c), explain how the economy will adjust in the long run.\n(e) The banking system has limited reserves. Identify the appropriate open-market operation to offset the price-level effect.\n(f) Draw a correctly labeled money market graph; show the effect on the equilibrium nominal interest rate.\n(g) Based on the interest rate change, what will happen to (i) the actual unemployment rate in the short run, and (ii) international financial capital flows?",ans:"(c) Cost-push inflation——钢价是重要投入品，成本上升使 SRAS 左移，是成本推动而非需求拉动。\n(d) 长期：失业高于自然率 → 名义工资下降 → SRAS 右移回原位 → 产出回到 YF、价格回落（若冲击是暂时的）。\n(e) 买债券（open-market purchase，扩张性 OMO），增加货币供给，对冲价格水平压力。\n(f) MS 右移 → 名义利率下降。\n(g) (i) 利率降 → 投资和消费升 → AD 右移 → 产出升 → 失业率下降。(ii) 利率降 → 本国资产吸引力下降 → 资本流出增加。",r:"SRAS p.464；Stagflation/Cost-push p.511-516；Monetary Policy p.750"},
+{y:2023,t:"Multipliers + Exchange Rate",q:"The economy of the United States is currently operating below full employment.\n(a) Assume the government wants to increase aggregate demand by $200 billion and the MPC is 0.8.\n(i) Calculate the minimum change in government spending needed and state its direction. Show your work.\n(ii) Suppose the government instead changes income taxes. Calculate the minimum change needed and state its direction. Show your work.\n(b) Assume that, due to the policy, the value of the dollar depreciates. Would net exports increase, decrease, or remain the same? Explain.\n(c) Draw a correctly labeled foreign exchange market graph for the dollar and show the effect of the change in net exports on the international value of the dollar.",ans:"(a)(i) 支出乘数 = 1/(1-0.8) = 5 → ΔG = 200/5 = $40 billion（增加，increase）。\n(ii) 税收乘数 = -0.8/(1-0.8) = -4 → ΔT = 200/(-4) = -$50 billion，即减税 $50 billion（decrease）。\n(b) Net exports increase：美元贬值 → 美国商品对外更便宜 → 出口升、进口降 → NX 升。\n(c) 汇率图：标好坐标轴（数量、汇率/美元价格）与供需曲线，按 NX 变化画出移动方向并标注新的均衡汇率。评分点：正确标注坐标轴、曲线移动方向。",r:"Expenditure Multiplier p.450-451；Tax Multiplier p.453；Exchange Rate p.1042"},
+{y:2023,t:"GDP Calculations",q:"The table provides macroeconomic data for the economy of Liang Island in 2020. The GDP deflator was 150.\nPersonal Consumption $70M, Government Spending $25M, Gross Private Domestic Investment $10M, Personal Income $90M, Exports $20M, Imports $5M, Population 5.\n(a) Calculate nominal GDP in 2020. Show your work.\n(b) Based on (a), calculate real GDP in 2020. Show your work.\n(c) Explain the conceptual difference between nominal GDP and real GDP.\n(d) Assume real GDP in 2019 was $120M and population did not change. Did the economy experience economic growth in per capita terms in 2020? Explain using numbers.\n(e) What is one specific fiscal policy action the government can take to promote long-run economic growth? Explain.",ans:"(a) NGDP = C + I + G + (X - M) = 70 + 10 + 25 + (20 - 5) = $120M。\n(b) RGDP = NGDP / deflator x 100 = 120 / 150 x 100 = $80M。\n(c) Nominal GDP 用当年价格、Real GDP 用基年价格；名义变动可能来自价格变化，实际变动只反映数量变化。\n(d) 人均实际 GDP：2019 = 120/5 = 24；2020 = 80/5 = 16 → 下降，没有经济增长（人均实际 GDP 减少）。\n(e) 例如增加教育支出（提高人力资本）→ 提高劳动生产率 → LRAS / PPC 右移 → 长期增长。",r:"GDP p.251；Nominal GDP p.356；GDP Deflator p.359；Human Capital p.930"},
+{y:2019,t:"Phillips Curve + Money Creation",q:"Assume a country's economy is currently in recession.\n(a) Draw a correctly labeled graph of the long-run and short-run Phillips curves. Label the current equilibrium as point Z.\n(b) Banks hold no excess reserves and the required reserve ratio is 25%. The central bank buys $100 billion in bonds from the nonbank public.\n(i) By how much will the monetary base change?\n(ii) Calculate the change in the amount of loans in the banking system.\n(iii) Calculate the change in the money supply.\n(c) Draw a correctly labeled graph of the money market and show the effect of the change in the money supply on the nominal interest rate.\n(d) Assume no change in inflationary expectations. On your graph in part (a), label a point W consistent with the interest rate change.\n(e) Based on the interest rate change, how will the international value of the currency change?\n(f) Based on your answer to (e), will the country's net exports increase, decrease, or stay the same? Explain.",ans:"(a) 点 Z 在 SRPC 上、LRPC 右侧（失业高于自然率）。\n(b) (i) 货币基础增加 $100 billion。(ii) 贷款增加 = 货币乘数 4 x (100 - 25) = $300 billion。(iii) 货币供给增加 = 4 x 100 = $400 billion（乘数 = 1/0.25 = 4）。\n(c) MS 右移 → 名义利率下降。\n(d) 点 W 在 Z 左侧（失业下降、通胀上升，沿 SRPC 移动）。\n(e) 利率降 → 资本外流 → 货币贬值（depreciate）。\n(f) Net exports increase：本国商品相对更便宜。",r:"Phillips Curve Module 5.2；Money Multiplier p.696/712；Open-Market Operations p.750"},
+{y:2019,t:"Loanable Funds + Forex Intervention",q:"Suppose the US government implements a fiscal policy that increases the budget surplus.\n(a) Draw a correctly labeled graph of the loanable funds market and show the effect of the increase in the budget surplus on the equilibrium real interest rate.\n(b) The EU is a major trading partner. Given your answer to (a), will the US dollar appreciate or depreciate against the euro? Explain.\n(c) Suppose the Federal Reserve decides to offset the change in the value of the dollar.\n(i) Would the Fed buy or sell the euro?\n(ii) Would the Fed buy or sell the dollar?\n(d) Suppose the Fed wants to counteract the real interest rate change in (a). What open-market operation would the Fed use?",ans:"(a) 预算盈余升 = 政府储蓄升 → 可贷资金供给右移 → 实际利率下降。\n(b) 美元贬值（depreciate）：利率降 → 美国资产回报率降 → 资本流出 → 美元需求降。\n(c) (i) 卖出欧元；(ii) 买入美元（抛欧元买美元，支撑美元）。\n(d) 卖债券（紧缩性 OMO）：减少货币供给 → 利率回升。",r:"Loanable Funds Market p.784；Crowding Out p.794；Exchange Rate p.1042"},
+{y:2019,t:"GDP / CPI Calculations",q:"Fruitland produces two goods, apples and oranges.\nYear 1: apples 4 units at $15 each; oranges 10 units at $4 each.\nYear 2: apples 10 units at $6 each; oranges 20 units at $5 each.\n(a) Calculate the nominal GDP for year 2.\n(b) Using year 1 as the base year, calculate real GDP for year 2.\n(c) Calculate the GDP deflator for year 2.\n(d) Assuming the market basket is composed of the quantities in year 1, calculate the CPI for year 2.\n(e) Suppose apple and orange pickers received a 2 percent increase in their wages. Based on your answer to (d), would real wages increase, decrease, or stay the same from year 1 to year 2? Explain.",ans:"(a) NGDP2 = 6 x 10 + 5 x 20 = 60 + 100 = 160。\n(b) RGDP2 = 4 x 10 + 10 x 20 = 40 + 200 = 240。\n(c) Deflator = 160 / 240 x 100 ≈ 67（价格水平下降）。\n(d) 篮子 = 基年数量：Year 1 成本 = 4 x 15 + 10 x 4 = 100；Year 2 成本 = 4 x 6 + 10 x 5 = 74；CPI = 74 / 100 x 100 = 74。\n(e) 名义工资 +2%，但 CPI 显示价格下降约 26% → 实际工资上升（购买力增强）。评分点：结论 + 用数字解释。",r:"Nominal GDP p.356；GDP Deflator p.359；Market Basket (CPI) p.314"}
 ];
 var QS=QS1.concat(QS2);
+/* ===================== 课本引用表（Krugman's Economics for AP®） ===================== */
+var REF={
+"Production Possibilities Curve":{m:"Module 1.2 — Opportunity Cost and the PPC",p:20},
+"Opportunity Cost & PPC":{m:"Module 1.2",p:20},
+"Economic Growth":{p:110,q:"Economic growth is an increase in the maximum amount of goods and services an economy can produce."},
+"Human Capital":{p:930,q:"Human capital is the improvement in labor created by the education and knowledge of members of the workforce."},
+"Productivity":{p:930,q:"Human capital is the improvement in labor created by the education and knowledge of members of the workforce."},
+"Comparative Advantage":{p:130,q:"An individual has a comparative advantage in producing a good or service if that person's opportunity cost is the lowest among the people who could produce that good or service."},
+"GDP Definition":{p:251,q:"GDP is the total value of all final goods and services produced in the economy during a given year."},
+"GDP (Value Added)":{p:257,q:"…we subtract the cost of inputs — the intermediate goods — at that stage, to avoid double-counting."},
+"Nominal vs. Real GDP":{p:356,q:"Nominal GDP is the total value of all final goods and services produced in the economy during a given year, calculated with the prices current in the year in which the output is produced."},
+"GDP Deflator":{p:359,q:"The GDP deflator for a given year is 100 times the ratio of nominal GDP to real GDP in that year."},
+"CPI Bias":{m:"Module 2.4 — Price Indices and the Aggregate Price Level",p:314,q:"A market basket is a hypothetical set of consumer purchases of goods and services."},
+"Inflation Definition":{p:306,q:"Inflation is a rise in the overall level of prices. The opposite of inflation is deflation, a fall in the overall level of prices."},
+"Unemployment Rate Limitations":{p:283,q:"Because it does not count discouraged workers, the measured unemployment rate may understate the percentage of people who want to work."},
+"Frictional Unemployment":{p:290,q:"Frictional unemployment is unemployment due to the time workers spend in job search."},
+"Natural Rate of Unemployment":{p:293,q:"The natural rate of unemployment is the unemployment rate that arises from the effects of frictional plus structural unemployment."},
+"Labor Force Participation Rate":{p:280,q:"The labor force participation rate is the percentage of the working age population… that is in the labor force."},
+"Spending Multiplier":{p:450,q:"The expenditure multiplier is the ratio of the total change in real GDP caused by an autonomous change in aggregate spending to the size of that autonomous change."},
+"Multiplier Calculations":{p:451,m:"Expenditure multiplier = 1/MPS",q:"It indicates the total rise in real GDP that results from each $1 of an initial rise in spending."},
+"Tax Multiplier":{p:453,q:"The tax multiplier is the factor by which we multiply a change in tax collections to find the total change in real GDP."},
+"Balanced Budget Multiplier":{p:559,q:"…the balanced budget multiplier is simply 1."},
+"Fiscal Policy":{p:543,q:"Fiscal policy is the use of government purchases of goods and services, government transfers, or tax policy to stabilize the economy."},
+"Contractionary Fiscal Policy":{p:543,q:"Fiscal policy is the use of government purchases of goods and services, government transfers, or tax policy to stabilize the economy."},
+"Expansionary Fiscal Policy":{p:543,q:"Fiscal policy is the use of government purchases of goods and services, government transfers, or tax policy to stabilize the economy."},
+"Anti-Inflationary Policy":{p:543,q:"Fiscal policy is the use of government purchases of goods and services, government transfers, or tax policy to stabilize the economy."},
+"Policy Mix":{m:"Module 3.8 Fiscal Policy / Module 4.6 Monetary Policy",p:543},
+"Budget Deficit":{p:782,q:"The budget deficit is the difference between tax revenue and government spending when government spending exceeds tax revenue."},
+"National Debt":{m:"Module 5.4 — Government Deficits and the National Debt",p:21},
+"Crowding Out":{p:794,q:"Economists call the negative effect of government budget deficits on investment spending crowding out."},
+"Loanable Funds Market":{p:784,q:"The loanable funds market is a hypothetical market that brings together those who want to lend money and those who want to borrow money."},
+"Nominal vs. Real Interest Rate":{p:342,q:"The real interest rate is the nominal interest rate minus the rate of inflation."},
+"Real Interest Rate":{p:342,q:"The real interest rate is the nominal interest rate minus the rate of inflation."},
+"Neutrality of Money":{p:867,q:"Because money is neutral, changes in the money supply will not affect real values in the long run."},
+"Money Demand & Opportunity Cost":{m:"Module 4.5 — The Money Market",p:32},
+"M1 and M2":{p:662,q:"The M1 monetary aggregate includes currency in circulation, checkable bank deposits…"},
+"Banks and Money Creation":{p:702,q:"Banks create money by accepting deposits and making loans — they make the money supply larger than just the value of currency in circulation."},
+"Money Creation":{p:702,q:"Banks create money by accepting deposits and making loans — they make the money supply larger than just the value of currency in circulation."},
+"Money Multiplier":{p:696,q:"The required reserve ratio is the smallest fraction of deposits that the central bank requires banks to hold."},
+"Quantity Theory of Money":{p:869,q:"The velocity of money is the ratio of nominal GDP to the money supply. It is a measure of the number of times the average dollar bill is spent per year."},
+"Monetary Policy":{p:750,q:"Central banks implement their chosen monetary policy using traditional tools, most commonly open-market operations."},
+"Phillips Curve":{m:"Module 5.2 — The Phillips Curve",p:21},
+"Inflationary Expectations & Natural Rate":{p:293,q:"The natural rate of unemployment is the unemployment rate that arises from the effects of frictional plus structural unemployment."},
+"Stagflation":{p:516,q:"The combination of inflation and falling aggregate output has a special name: stagflation, for 'stagnation plus inflation.'"},
+"Cost-Push Inflation":{m:"Module 3.6 — Demand-Pull vs. Cost-Push Inflation",p:511},
+"AD–AS Equilibrium":{m:"Module 3.5 — Equilibrium in the AD–AS Model",p:20},
+"Long-Run Self-Adjustment":{m:"Module 3.5 — Equilibrium in the AD–AS Model",p:20},
+"Aggregate Demand (Net Exports Effect)":{p:428,q:"The aggregate demand curve is downward-sloping, indicating a negative relationship between the aggregate price level and the quantity of aggregate output demanded."},
+"AD and Inflation":{p:428,q:"The aggregate demand curve is downward-sloping, indicating a negative relationship between the aggregate price level and the quantity of aggregate output demanded."},
+"Short-Run Aggregate Supply (Shifts)":{p:464,q:"The short-run aggregate supply curve shows the positive relationship between the aggregate price level and the quantity of aggregate output supplied that exists in the short run."},
+"SRAS Assumption (Sticky Wages)":{p:460,q:"The upward slope of the short-run aggregate supply curve results from sticky wages and prices."},
+"Balance of Payments":{p:1009,q:"A country's financial account is the difference between its sales of assets to foreigners and its purchases of assets from foreigners during a given period."},
+"Exchange Rate & Net Exports":{p:1042,q:"The equilibrium exchange rate is the exchange rate at which the quantity of a currency demanded in the foreign exchange market is equal to the quantity supplied."},
+"Currency Depreciation":{p:1062,q:"The exchange rate is the price of a country's currency in terms of another country's currency."}
+};
 </script>
 <script>
-var store={load:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},save:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
-var results=store.load('apm_results',{});
-var mistakes=store.load('apm_mistakes',[]);
+/* ===================== 状态 ===================== */
+var store={
+  load:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}},
+  save:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+};
+function uid(y,i){return y+'-'+i;}
+/* 迁移旧数据：undefined-N → 正确年份-N */
+function migrateKeys(obj){
+  var out={};
+  Object.keys(obj).forEach(function(k){
+    var p=k.split('-'), idx=parseInt(p[1],10);
+    if(p[0]==='undefined' && QS[idx]) out[uid(QS[idx].y,idx)] = obj[k];
+    else out[k]=obj[k];
+  });
+  return out;
+}
+function migrateList(arr){
+  var out=[];
+  arr.forEach(function(k){
+    var p=k.split('-'), idx=parseInt(p[1],10);
+    out.push((p[0]==='undefined' && QS[idx]) ? uid(QS[idx].y,idx) : k);
+  });
+  return out;
+}
+var results=migrateKeys(store.load('apm_results',{}));
+var mistakes=migrateList(store.load('apm_mistakes',[]));
+var frqAns=store.load('apm_frq',{});
 var mode={type:'all',unit:0};
 var $=function(s){return document.querySelector(s);};
-function uid(q,i){return q.y+'-'+i;}
-var UNITS=['全部','Unit 1 基本概念','Unit 2 经济指标','Unit 3 国民收入','Unit 4 金融部门','Unit 5 政策与长期','Unit 6 开放经济'];
+var UNITS=['All','Unit 1 Basic Concepts','Unit 2 Economic Indicators','Unit 3 National Income','Unit 4 Financial Sector','Unit 5 Policy & Long Run','Unit 6 Open Economy'];
+if(JSON.stringify(migrateKeys(store.load('apm_results',{})))!==JSON.stringify(store.load('apm_results',{}))){
+  store.save('apm_results',results); store.save('apm_mistakes',mistakes);
+}
 function render(route){
   document.querySelectorAll('[data-route]').forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+route);});
   var v=['home','quiz','mistakes','frq','stats'];
@@ -205,15 +318,24 @@ function render(route){
 function stat(n,l){return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>';}
 function short(s,n){return s.length>n?s.slice(0,n)+'…':s;}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}}
+function refHtml(t){
+  var r=REF[t];
+  if(!r) return '<div class="ref"><b>Textbook:</b> '+t+'（Krugman’s Economics for AP®）</div>';
+  var s='<div class="ref"><b>Textbook — '+t+'</b> · p.'+r.p;
+  if(r.m) s+=' · '+r.m;
+  s+='<br><i>'+r.q+'</i></div>';
+  return s;
+}
+/* ===================== 首页 ===================== */
 function homeView(){
   var done=0,correct=0;
   Object.keys(results).forEach(function(k){done++;if(results[k]===1)correct++;});
   var rate=done?Math.round(correct/done*100):0;
-  var html='<div class="grid">'+stat(done+' / '+QS.length,'已做题')+stat(rate+'%','总正确率')+stat(mistakes.length,'错题本')+stat(FRS.length,'FRQ 题库')+'</div>'+
-   '<div class="card" style="margin-top:14px"><h2>开始刷题</h2><div class="mode"><button data-m="all">全部随机</button><button data-m="new">只做未做的</button><button data-m="mistake">错题重练</button></div></div>'+
-   '<div class="card"><h2>按单元刷题</h2><div class="chips" id="unit-chips"></div><div style="margin-top:12px"><button id="btn-unit-go" class="btn dark" style="width:100%">开始本单元</button></div></div>'+
-   '<div class="card"><h2>进度同步（电脑 ↔ iPad）</h2><div style="font-size:13px;color:var(--ink2);margin-bottom:10px">把答题进度和错题本带到另一台设备：这边导出一份进度文本，在另一台设备上导入即可。</div><div class="mode"><button data-sync="export">导出进度</button><button data-sync="import">导入进度</button></div></div>'+
-   '<div class="note">题库：2019 年官方真题 48 题（含官方答案与解析）+ 2023 年真题 12 题，共 '+QS.length+' 道选择题，按 AP 宏观六单元分类；另有 FRQ 6 道（2023 x3、2019 x3，附评分要点）。答错自动进错题本。进度与错题仅保存在本机浏览器。</div>';
+  var html='<div class="grid">'+stat(done+' / '+QS.length,'Questions done')+stat(rate+'%','Accuracy')+stat(mistakes.length,'Mistakes')+stat(FRS.length,'FRQs')+'</div>'+
+   '<div class="card" style="margin-top:14px"><h2>Start Practicing</h2><div class="mode"><button data-m="all">All (random)</button><button data-m="new">Only new</button><button data-m="mistake">Mistake redo</button></div></div>'+
+   '<div class="card"><h2>Practice by Unit</h2><div class="chips" id="unit-chips"></div><div style="margin-top:12px"><button id="btn-unit-go" class="btn dark" style="width:100%">Start this unit</button></div></div>'+
+   '<div class="card"><h2>Progress Sync (PC ↔ iPad)</h2><div style="font-size:13px;color:var(--ink2);margin-bottom:10px">Move your progress to another device: export here, then import on the other device.</div><div class="mode"><button data-sync="export">Export progress</button><button data-sync="import">Import progress</button></div></div>'+
+   '<div class="note">Question bank: 48 official 2019 MCQs (with answer key &amp; analysis) + 12 from 2023, categorized by the 6 AP Macro units; plus 6 FRQs (2023 ×3, 2019 ×3) with scoring guides. Every explanation links the concept to the textbook (Krugman’s Economics for AP®, page numbers verified from the textbook text). Wrong answers go to Mistakes automatically. Progress is stored only in this browser. To get AI analysis of your mistakes, open <b>Mistakes → Export mistakes for AI analysis</b>, paste the text into Doubao, and I will analyze them for you.</div>';
   $('#view-home').innerHTML=html;
   document.querySelectorAll('#view-home [data-m]').forEach(function(b){b.onclick=function(){mode.type=b.getAttribute('data-m');startQuiz();};});
   var chips=$('#unit-chips');
@@ -227,13 +349,14 @@ function homeView(){
   $('#btn-unit-go').onclick=function(){mode.type='unit';startQuiz();};
   document.querySelectorAll('#view-home [data-sync]').forEach(function(b){b.onclick=function(){if(b.getAttribute('data-sync')==='export')openExport();else openImport();};});
 }
+/* ===================== 模态 & 同步 ===================== */
 function modal(title,hint,text,mainLabel,mainFn,showFile){
   var bg=$('#modal-bg');
   $('#modal-title').textContent=title;
   $('#modal-hint').textContent=hint;
   var ta=$('#modal-text');
   ta.value=text||'';
-  ta.readOnly=(mainLabel!=='导入');
+  ta.readOnly=(mainLabel!=='Import');
   $('#modal-main').textContent=mainLabel;
   $('#modal-main').onclick=mainFn;
   var fb=$('#modal-file');
@@ -242,22 +365,27 @@ function modal(title,hint,text,mainLabel,mainFn,showFile){
   $('#modal-close').onclick=function(){bg.classList.remove('show');};
   bg.classList.add('show');
 }
+function copyText(ta){
+  ta.select(); ta.setSelectionRange(0,99999);
+  try{return document.execCommand('copy');}catch(e){return false;}
+}
 function openExport(){
   var data=JSON.stringify({results:results,mistakes:mistakes});
-  modal('导出进度','复制下面这段文本，通过微信/文件传输助手发到另一台设备；在那边打开 App → 首页 → 导入进度，粘贴即可。也可以点「下载为文件」存成文件。',data,'复制',function(){var ta=$('#modal-text');ta.select();ta.setSelectionRange(0,99999);try{if(document.execCommand('copy'))$('#modal-hint').textContent='已复制！去另一台设备导入即可。';}catch(e){}},true);
+  modal('Export progress','Copy the text below and send it to your other device (e.g. via WeChat / AirDrop); open the app there and use Import. You can also download it as a file.',data,'Copy',function(){var ta=$('#modal-text');if(copyText(ta))$('#modal-hint').textContent='Copied! Import it on the other device.';},true);
 }
 function openImport(){
-  modal('导入进度','把另一台设备导出的进度文本粘贴到下面，然后点「导入」。注意：导入会覆盖本机当前进度，建议先导出一份备份。','','导入',function(){var ta=$('#modal-text');try{var d=JSON.parse(ta.value);if(d&&typeof d==='object'&&d.results&&d.mistakes){results=d.results;mistakes=d.mistakes;store.save('apm_results',results);store.save('apm_mistakes',mistakes);$('#modal-hint').textContent='导入成功！共 '+Object.keys(results).length+' 条答题记录、'+mistakes.length+' 道错题。';var r=(location.hash||'#home').replace('#','');render(['home','quiz','mistakes','frq','stats'].indexOf(r)>=0?r:'home');}else{throw 0;}}catch(e){$('#modal-hint').textContent='导入失败：内容格式不对，请确认复制的是完整的导出文本。';}},false);
+  modal('Import progress','Paste the progress text from the other device below, then tap Import. Importing overwrites current local progress — export a backup first if needed.','','Import',function(){var ta=$('#modal-text');try{var d=JSON.parse(ta.value);if(d&&typeof d==='object'&&d.results&&d.mistakes){results=migrateKeys(d.results);mistakes=migrateList(d.mistakes);store.save('apm_results',results);store.save('apm_mistakes',mistakes);$('#modal-hint').textContent='Imported! '+Object.keys(results).length+' records, '+mistakes.length+' mistakes.';var r=(location.hash||'#home').replace('#','');render(['home','quiz','mistakes','frq','stats'].indexOf(r)>=0?r:'home');}else{throw 0;}}catch(e){$('#modal-hint').textContent='Import failed: format is invalid — make sure you copied the full export text.';}},false);
 }
 function downloadProgress(){
   var data=JSON.stringify({results:results,mistakes:mistakes});
   var blob=new Blob([data],{type:'application/json'});
   var a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
-  a.download='AP-Macro-进度备份.json';
+  a.download='AP-Macro-progress-backup.json';
   document.body.appendChild(a);a.click();
   setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href);},100);
 }
+/* ===================== 刷题 ===================== */
 var quiz={list:[],idx:0,round:{correct:0,wrong:0}};
 function startQuiz(){
   var list=[];
@@ -268,20 +396,20 @@ function startQuiz(){
     else if(mode.type==='new'){if(!(id in results))list.push(i);}
     else list.push(i);
   });
-  if(!list.length){alert('没有符合条件的题目，换一种模式试试');return;}
+  if(!list.length){alert('No questions match this mode — try another.');return;}
   if(mode.type==='all'||mode.type==='new')shuffle(list);
   quiz.list=list;quiz.idx=0;quiz.round={correct:0,wrong:0};
   location.hash='#quiz';
 }
 function quizView(){
   var el=$('#view-quiz');
-  if(!quiz.list.length){el.innerHTML='<div class="empty">先到首页选择开始刷题</div>';return;}
+  if(!quiz.list.length){el.innerHTML='<div class="empty">Go to Home and choose a mode to start.</div>';return;}
   if(quiz.idx>=quiz.list.length){return finishView(el);}
   var i=quiz.list[quiz.idx],q=QS[i],id=uid(q.y,i);
   var pct=Math.round(quiz.idx/quiz.list.length*100);
-  el.innerHTML='<div class="quiz-head"><div class="meta">第 '+(quiz.idx+1)+' 题 / 共 '+quiz.list.length+' 题</div><div class="progress"><i style="width:'+pct+'%"></i></div></div>'+
+  el.innerHTML='<div class="quiz-head"><div class="meta">Question '+(quiz.idx+1)+' of '+quiz.list.length+'</div><div class="progress"><i style="width:'+pct+'%"></i></div></div>'+
    '<div class="card q-card"><div class="q-band" style="background:var(--u'+q.u+')"></div><div class="q-body">'+
-    '<div class="q-meta"><span class="tag u'+q.u+'">'+UNITS[q.u]+'</span><span class="tag" style="background:var(--ink2)">'+q.t+'</span><span class="yr">'+q.y+' 年真题</span></div>'+
+    '<div class="q-meta"><span class="tag u'+q.u+'">'+UNITS[q.u]+'</span><span class="tag" style="background:var(--ink2)">'+q.t+'</span><span class="yr">'+q.y+' real exam</span></div>'+
     '<div class="q-text">'+q.q+'</div>'+
     '<div class="opts">'+q.o.map(function(op,k){return '<button class="opt" data-k="'+k+'"><span class="k">'+String.fromCharCode(65+k)+'.</span><span>'+op+'</span></button>';}).join('')+'</div>'+
     '<div class="explain" id="exp"></div><div class="quiz-actions" id="act"></div>'+
@@ -301,57 +429,106 @@ function answer(i,pick){
   var inM=mistakes.indexOf(id)>=0;
   var exp=$('#exp');
   exp.className='explain show';
-  exp.innerHTML='<div class="res '+(correct?'ok':'bad')+'">'+(correct?'正确！':'正确答案是 '+String.fromCharCode(65+q.a))+'</div><div class="exp">'+q.e+'</div>';
-  $('#act').innerHTML='<button class="btn '+(inM?'badge-on':'ghost')+'" id="btn-m">'+(inM?'在错题本中（点击移出）':'加入错题本')+'</button><button class="btn dark" id="btn-next">'+(quiz.idx+1<quiz.list.length?'下一题':'完成本轮')+'</button>';
-  $('#btn-m').onclick=function(){var k=mistakes.indexOf(id);if(k>=0)mistakes.splice(k,1);else mistakes.push(id);store.save('apm_mistakes',mistakes);var b=this;b.className='btn '+(mistakes.indexOf(id)>=0?'badge-on':'ghost');b.textContent=mistakes.indexOf(id)>=0?'在错题本中（点击移出）':'加入错题本';};
+  exp.innerHTML='<div class="res '+(correct?'ok':'bad')+'">'+(correct?'Correct!':'Correct answer: '+String.fromCharCode(65+q.a))+'</div>'+
+    '<div class="exp"><b>Concepts:</b> '+q.t+'</div>'+refHtml(q.t)+
+    '<div class="exp"><b>Why:</b> '+q.e+'</div>';
+  $('#act').innerHTML='<button class="btn '+(inM?'badge-on':'ghost')+'" id="btn-m">'+(inM?'In mistakes (tap to remove)':'Add to mistakes')+'</button><button class="btn dark" id="btn-next">'+(quiz.idx+1<quiz.list.length?'Next question':'Finish round')+'</button>';
+  $('#btn-m').onclick=function(){var k=mistakes.indexOf(id);if(k>=0)mistakes.splice(k,1);else mistakes.push(id);store.save('apm_mistakes',mistakes);var b=this;b.className='btn '+(mistakes.indexOf(id)>=0?'badge-on':'ghost');b.textContent=mistakes.indexOf(id)>=0?'In mistakes (tap to remove)':'Add to mistakes';};
   $('#btn-next').onclick=function(){quiz.idx++;render('quiz');};
 }
 function finishView(el){
   var c=quiz.round.correct,w=quiz.round.wrong,t=c+w;
-  el.innerHTML='<div class="card" style="text-align:center;padding:30px"><h2 style="font-size:20px;margin-bottom:16px">本轮完成</h2>'+
-   '<div class="grid">'+stat(c,'答对')+stat(w,'答错')+stat(t?Math.round(c/t*100)+'%':'-','本轮正确率')+'</div>'+
-   '<div class="quiz-actions" style="justify-content:center;margin-top:18px"><button class="btn dark" id="again">再刷一轮</button><button class="btn ghost" id="tohome">返回首页</button></div></div>';
+  el.innerHTML='<div class="card" style="text-align:center;padding:30px"><h2 style="font-size:20px;margin-bottom:16px">Round Complete</h2>'+
+   '<div class="grid">'+stat(c,'Correct')+stat(w,'Wrong')+stat(t?Math.round(c/t*100)+'%':'-','Round accuracy')+'</div>'+
+   '<div class="quiz-actions" style="justify-content:center;margin-top:18px"><button class="btn dark" id="again">Do another round</button><button class="btn ghost" id="tohome">Back to Home</button></div></div>';
   $('#again').onclick=function(){shuffle(quiz.list);quiz.idx=0;quiz.round={correct:0,wrong:0};render('quiz');};
   $('#tohome').onclick=function(){location.hash='#home';};
 }
+/* ===================== 错题本 ===================== */
 function mistakesView(){
   var el=$('#view-mistakes');
-  if(!mistakes.length){el.innerHTML='<div class="card"><h2>错题本</h2><div class="empty">还没有错题，继续保持！答错的题会自动收进来。</div></div>';return;}
-  var html='<div class="card"><h2>错题本（'+mistakes.length+' 题）</h2>';
+  if(!mistakes.length){
+    el.innerHTML='<div class="card"><h2>Mistakes</h2><div class="empty">No mistakes yet — keep going! Wrong answers are collected here automatically.</div></div>';
+    return;
+  }
+  var html='<div class="card"><h2>Mistakes ('+mistakes.length+')</h2>';
   mistakes.forEach(function(id){
     var parts=id.split('-'),idx=parseInt(parts[1],10);
     if(!QS[idx])return;
     var q=QS[idx];
-    html+='<div class="item"><div class="grow"><div class="title">'+q.t+' · '+UNITS[q.u]+'</div><div class="sub">'+q.y+' 年真题 · '+short(q.q,52)+'</div></div><button class="btn ghost" data-id="'+id+'">重做</button></div>';
+    html+='<div class="item"><div class="grow"><div class="title">'+q.t+' · '+UNITS[q.u]+'</div><div class="sub">'+q.y+' real exam · '+short(q.q,52)+'</div></div><button class="btn ghost" data-id="'+id+'">Redo</button></div>';
   });
-  html+='<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn dark" id="m-practice">重练全部错题</button><button class="btn ghost" id="m-clear">清空错题本</button></div></div>';
+  html+='<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">'+
+   '<button class="btn dark" id="m-practice">Redo all mistakes</button>'+
+   '<button class="btn dark" id="m-export" style="background:var(--accent)">Export mistakes for AI analysis</button>'+
+   '<button class="btn ghost" id="m-clear">Clear mistakes</button>'+
+  '</div></div>';
   el.innerHTML=html;
   el.querySelectorAll('[data-id]').forEach(function(b){b.onclick=function(){mode.type='mistake';startQuiz();};});
   $('#m-practice').onclick=function(){mode.type='mistake';startQuiz();};
+  $('#m-export').onclick=exportMistakesForAI;
   $('#m-clear').onclick=function(){mistakes=[];store.save('apm_mistakes',mistakes);render('mistakes');};
 }
+function exportMistakesForAI(){
+  var lines=['AP MACRO MISTAKES EXPORT','========================'];
+  mistakes.forEach(function(id){
+    var parts=id.split('-'),idx=parseInt(parts[1],10);
+    var q=QS[idx]; if(!q) return;
+    lines.push('');
+    lines.push('['+id+'] '+q.q);
+    q.o.forEach(function(op,k){lines.push('  '+String.fromCharCode(65+k)+'. '+op);});
+    lines.push('  Correct answer: '+String.fromCharCode(65+q.a));
+    lines.push('  Concept: '+q.t);
+    var r=REF[q.t];
+    if(r) lines.push('  Textbook: p.'+r.p+(r.m?' ('+r.m+')':'')+(r.q?': '+r.q:''));
+    lines.push('  Analysis: '+q.e);
+  });
+  lines.push('');
+  lines.push('(Paste this into Doubao and ask: analyze my mistakes)');
+  var data=lines.join('\n');
+  modal('Export mistakes','Copy the text and paste it into the Doubao chat — I will analyze each mistake for you.','Copy',function(){var ta=$('#modal-text');if(copyText(ta))$('#modal-hint').textContent='Copied! Go paste it into the chat.';},false);
+}
+/* ===================== FRQ ===================== */
 function frqView(){
-  var html='<div class="card" style="background:linear-gradient(135deg,#F0EEE7,#F6F4EF)"><h2>FRQ 真题练习</h2><div style="font-size:13.5px;color:var(--ink2)">先自己动笔写，再展开看评分要点。画图题重点练坐标轴标注与曲线移动方向。</div></div>';
-  FRS.forEach(function(f){
-    html+='<div class="frq"><h3><span class="yr">'+f.y+' 真题</span> '+f.t+'</h3><div class="q">'+f.q+'</div><details><summary>查看评分要点</summary><div class="ans">'+f.ans+'</div></details></div>';
+  var html='<div class="card" style="background:linear-gradient(135deg,#F0EEE7,#F6F4EF)"><h2>FRQ Practice</h2>'+
+   '<div style="font-size:13.5px;color:var(--ink2)">Write your answer in the box below each question — it is saved automatically in this browser. Then expand the scoring guide to check yourself.</div></div>';
+  FRS.forEach(function(f,i){
+    var saved=frqAns[i]||'';
+    html+='<div class="frq"><h3><span class="yr">'+f.y+' real exam</span> '+f.t+'</h3>'+
+     '<div class="q">'+f.q+'</div>'+
+     '<textarea data-frq="'+i+'" placeholder="Write your answer here…">'+saved+'</textarea>'+
+     '<div class="save-hint" data-hint="'+i+'">Answer saved ✓</div>'+
+     '<details><summary>View scoring guide</summary><div class="ans">'+f.ans+'</div>'+(f.r?'<div class="ans" style="margin-top:8px;color:var(--ink2)"><b>Textbook:</b> '+f.r+'</div>':'')+'</details></div>';
   });
   $('#view-frq').innerHTML=html;
+  document.querySelectorAll('#view-frq textarea').forEach(function(ta){
+    var idx=parseInt(ta.getAttribute('data-frq'),10);
+    ta.addEventListener('input',function(){
+      frqAns[idx]=ta.value; store.save('apm_frq',frqAns);
+      var h=document.querySelector('[data-hint="'+idx+'"]');
+      h.style.display='block';
+      clearTimeout(h._t);
+      h._t=setTimeout(function(){h.style.display='none';},1500);
+    });
+  });
 }
+/* ===================== 统计 ===================== */
 function statsView(){
   var per=[0,0,0,0,0,0,0],tot=[0,0,0,0,0,0,0],done=0,correct=0;
   QS.forEach(function(q,i){
     var id=uid(q.y,i);
     if(id in results){tot[q.u]++;done++;if(results[id]===1){per[q.u]++;correct++;}}
   });
-  var html='<div class="card"><h2>练习统计</h2><div class="grid">'+stat(done+' / '+QS.length,'总做题')+stat(done?Math.round(correct/done*100)+'%':'-','总正确率')+'</div></div>';
-  html+='<div class="card"><h2>各单元正确率</h2>';
+  var html='<div class="card"><h2>Practice Stats</h2><div class="grid">'+stat(done+' / '+QS.length,'Total done')+stat(done?Math.round(correct/done*100)+'%':'-','Accuracy')+'</div></div>';
+  html+='<div class="card"><h2>Accuracy by Unit</h2>';
   for(var u=1;u<=6;u++){
     var pct=tot[u]?Math.round(per[u]/tot[u]*100):0;
     html+='<div class="bar-row"><div class="lbl"><span class="dot" style="background:var(--u'+u+')"></span>'+UNITS[u].replace('Unit '+u+' ','U'+u)+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:var(--u'+u+')"></div></div><div class="pct">'+(tot[u]?pct+'%':'-')+'</div></div>';
   }
-  html+='<div class="note">各单元做题数：'+tot.slice(1).join(' / ')+(done?'':'（还没做题，先去刷几道吧）')+'</div></div>';
+  html+='<div class="note">Questions done per unit: '+tot.slice(1).join(' / ')+(done?'':'（No questions done yet — go practice!）')+'</div></div>';
   $('#view-stats').innerHTML=html;
 }
+/* ===================== 路由 ===================== */
 window.addEventListener('hashchange',function(){var r=(location.hash||'#home').replace('#','');render(['home','quiz','mistakes','frq','stats'].indexOf(r)>=0?r:'home');});
 render((location.hash||'#home').replace('#','')||'home');
 </script>
